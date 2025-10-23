@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { styles } from "./LoginScreen.styles";
+import { colors, styles } from "./LoginScreen.styles";
 
 export default function LoginScreen() {
   const [count, setCount] = useState(0);
@@ -15,8 +15,21 @@ export default function LoginScreen() {
 			<View style={styles.content}>
 				<Text style={styles.title}>Sign In</Text>
 
-				<TextInput style={styles.input} placeholder="e-mail" keyboardType="email-address" />
-				<TextInput style={styles.input} placeholder="password" secureTextEntry />
+				<TextInput
+					style={styles.input}
+					placeholder="e-mail"
+					keyboardType="email-address" 
+					placeholderTextColor={"colors.placeholder"}
+					selectionColor={"colors.primary"}
+					cursorColor={"colors.primary"}
+					/>
+				<TextInput style={styles.input}
+					placeholder="password"
+					secureTextEntry
+					placeholderTextColor={"colors.placeholder"}
+					selectionColor={"colors.primary"}
+					cursorColor={"colors.primary"}
+					/>
 
 				<View style={styles.buttons}>
 					<TouchableOpacity style={styles.button} onPress={handleSignIn}>
