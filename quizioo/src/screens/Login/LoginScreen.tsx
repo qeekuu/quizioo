@@ -11,22 +11,24 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Sign In</Text>
+		<View style={styles.frame}>
+			<View style={styles.content}>
+				<Text style={styles.title}>Sign In</Text>
 
-        <TextInput style={styles.input} placeholder="e-mail" keyboardType="email-address" />
-        <TextInput style={styles.input} placeholder="password" secureTextEntry />
+				<TextInput style={styles.input} placeholder="e-mail" keyboardType="email-address" />
+				<TextInput style={styles.input} placeholder="password" secureTextEntry />
 
-        <View style={styles.buttons}>
-          <TouchableOpacity style={styles.button} onPress={handleSignIn}>
-            <Text style={styles.buttonText}>Sign In</Text>
-          </TouchableOpacity>
+				<View style={styles.buttons}>
+					<TouchableOpacity style={styles.button} onPress={handleSignIn}>
+						<Text style={styles.buttonText}>Sign In</Text>
+					</TouchableOpacity>
 
-          <TouchableOpacity style={[styles.button, styles.signUpButton]} onPress={handleSignUp}>
-            <Text style={styles.buttonText}>Sign Up</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+					<TouchableOpacity style={[styles.button, styles.signUpButton]} onPress={handleSignUp}>
+						<Text style={styles.buttonText}>Sign Up</Text>
+					</TouchableOpacity>
+				</View>
+			</View>
+		</View>
     </SafeAreaView>
   );
 }
