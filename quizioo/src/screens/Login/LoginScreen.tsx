@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
-import {Alert, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View, Image, Pressable,
-} from "react-native";
+import {Alert, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View, Image, Pressable,} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors, styles } from "./LoginScreen.styles";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -67,7 +66,7 @@ export default function LoginScreen() {
                   onChangeText={setPassword}
                   secureTextEntry={secure}
                   returnKeyType="done"
-                  placeholder="••••••••"
+                  placeholder="********"
                   placeholderTextColor={colors.textPlaceholder}
                   selectionColor={colors.primary}
                   cursorColor={colors.primary}
