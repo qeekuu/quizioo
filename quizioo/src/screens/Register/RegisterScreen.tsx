@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import React, { useRef, useState } from "react";
+import {Alert, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View, Image, Pressable,} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors, styles } from "./RegisterScreen.styles";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
@@ -10,50 +10,103 @@ type Nav = NativeStackNavigationProp<RootStackParamList, 'Register'>
 
 export default function RegisterScreen() {
 	const navigation = useNavigation<Nav>();
+	
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [secure, setSecure] = useState(true);
 
-  const [count, setCount] = useState(0);
+	const passwordRef = useRef<TextInput>(null);
+	const confirmRef = useRef<TextInput>(null);
 
   const handleSignUp = () => navigation.navigate("Login");
 
   return (
-    <SafeAreaView style={styles.container}>
-		<View style={styles.frame}>
-			<View style={styles.content}>
-				<Text style={styles.title}>Sign Up</Text>
+<SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+      >
+          <Image
+            style={styles.logo}
+            source={require("../../../assets/quizio.png")}
+            resizeMode="contain"
+          />
 
+          <View style={styles.card}>
+            <Text style={styles.h1}>Welcome 👋</Text>
+            <Text style={styles.sub}>Sign up</Text>
+
+            {/* Email */}
+            <View style={styles.field}>
+              <Text style={styles.label}>E-mail</Text>
+              <TextInput
+                style={styles.input}
+                value={email}
+                onChangeText={setEmail}
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="email-address"
+                returnKeyType="next"
+                onSubmitEditing={() => passwordRef.current?.focus()}
+                placeholder="email"
+                placeholderTextColor={colors.textPlaceholder}
+                selectionColor={colors.primary}
+                cursorColor={colors.primary}
+              />
+            </View>
+
+            {/* Password */}
+            <View style={styles.field}>
+              <Text style={styles.label}>Password</Text>
+              <View style={styles.inputRow}>
+                <TextInput
+                  ref={passwordRef}
+                  style={styles.inputFlex}
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={secure}
+                  returnKeyType="next"
+				  onSubmitEditing={() => confirmRef.current?.focus()}
+                  placeholder="••••••••"
+                  placeholderTextColor={colors.textPlaceholder}
+                  selectionColor={colors.primary}
+                  cursorColor={colors.primary}
+                />
+				<Pressable onPress={() => setSecure(s => !s)} hitSlop={8}>
+					<Text style={styles.toggle}>{secure ? "Show" : "Hide"}</Text>
+				</Pressable>
+			  </View>
+			</View>
+
+			{/*Confirm password */}
+			<View style={styles.field}>
+				<Text style={styles.label}>Confirm password</Text>
+				<View style={styles.inputRow}>
 				<TextInput
-					style={styles.input}
-					placeholder="e-mail"
-					keyboardType="email-address" 
+					ref={confirmRef}
+					style={styles.inputFlex}
+					value={password}
+					onChangeText={setPassword}
+					secureTextEntry={secure}
+					returnKeyType="done"
+					placeholder="••••••••"
 					placeholderTextColor={colors.textPlaceholder}
 					selectionColor={colors.primary}
 					cursorColor={colors.primary}
-					/>
-				<TextInput style={styles.input}
-					placeholder="password"
-					secureTextEntry
-					placeholderTextColor={colors.textPlaceholder}
-					selectionColor={colors.primary}
-					cursorColor={colors.primary}
-					/>
-				<TextInput style={styles.input}
-					placeholder="password"
-					secureTextEntry
-					placeholderTextColor={colors.textPlaceholder}
-					selectionColor={colors.primary}
-					cursorColor={colors.primary}
-					/>
-
-
-				<View style={styles.buttons}>
-
-					<TouchableOpacity style={[styles.button, styles.signUpButton]} onPress={handleSignUp}>
-						<Text style={styles.buttonText}>Sign Up</Text>
-					</TouchableOpacity>
+				/>
+                <Pressable onPress={() => setSecure(s => !s)} hitSlop={8}>
+                  <Text style={styles.toggle}>{secure ? "Show" : "Hide"}</Text>
+                </Pressable>
 				</View>
 			</View>
-		</View>
+
+			<TouchableOpacity style={styles.button} onPress={handleSignUp}>
+				<Text style={styles.buttonText}>Sign Up</Text>	
+			</TouchableOpacity>
+          </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
+
   );
 }
 
