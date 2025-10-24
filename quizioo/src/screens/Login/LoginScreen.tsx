@@ -1,56 +1,99 @@
-import React, { useState } from "react";
-import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import React, { useRef, useState } from "react";
+import {Alert, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View, Image, Pressable,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors, styles } from "./LoginScreen.styles";
-import {NativeStackNavigationProp} from "@react-navigation/native-stack";
-import {RootStackParamList} from "../../navigation/RootNavigator";
-import {useNavigation} from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../navigation/RootNavigator";
+import { useNavigation } from "@react-navigation/native";
 
-type Nav = NativeStackNavigationProp<RootStackParamList, 'Login'>;
+type Nav = NativeStackNavigationProp<RootStackParamList, "Login">;
 
 export default function LoginScreen() {
-	const navigation = useNavigation<Nav>();
+  const navigation = useNavigation<Nav>();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [secure, setSecure] = useState(true);
 
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
+  const passwordRef = useRef<TextInput>(null);
 
-	const handleSignIn = () => navigation.navigate("Home");
-
-	const handleSignUp = () => navigation.navigate("Register");
+  const handleSignIn = () => navigation.navigate("Home");
+  const handleSignUp = () => navigation.navigate("Register");
+  const handleForgot = () => Alert.alert("Forgot password");
 
   return (
     <SafeAreaView style={styles.container}>
-		<View style={styles.frame}>
-			<View style={styles.content}>
-				<Text style={styles.title}>Sign In</Text>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+      >
+          <Image
+            style={styles.logo}
+            source={require("../../../assets/quizio.png")}
+            resizeMode="contain"
+          />
 
-				<TextInput
-					style={styles.input}
-					placeholder="e-mail"
-					keyboardType="email-address"
-					placeholderTextColor={colors.textPlaceholder}
-					selectionColor={colors.primary}
-					cursorColor={colors.primary}
-					/>
-				<TextInput style={styles.input}
-					placeholder="password"
-					secureTextEntry
-					placeholderTextColor={colors.textPlaceholder}
-					selectionColor={colors.primary}
-					cursorColor={colors.primary}
-					/>
+          <View style={styles.card}>
+            <Text style={styles.h1}>Welcome back 👋</Text>
+            <Text style={styles.sub}>Sign in to continue</Text>
 
-				<View style={styles.buttons}>
-					<TouchableOpacity style={styles.button} onPress={handleSignIn}>
-						<Text style={styles.buttonText}>Sign In</Text>
-					</TouchableOpacity>
+            {/* Email */}
+            <View style={styles.field}>
+              <Text style={styles.label}>E-mail</Text>
+              <TextInput
+                style={styles.input}
+                value={email}
+                onChangeText={setEmail}
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="email-address"
+                returnKeyType="next"
+                onSubmitEditing={() => passwordRef.current?.focus()}
+                placeholder="email"
+                placeholderTextColor={colors.textPlaceholder}
+                selectionColor={colors.primary}
+                cursorColor={colors.primary}
+              />
+            </View>
 
-					<TouchableOpacity style={[styles.button, styles.signUpButton]} onPress={handleSignUp}>
-						<Text style={styles.buttonText}>Sign Up</Text>
-					</TouchableOpacity>
-				</View>
-			</View>
-		</View>
+            {/* Password */}
+            <View style={styles.field}>
+              <Text style={styles.label}>Hasło</Text>
+              <View style={styles.inputRow}>
+                <TextInput
+                  ref={passwordRef}
+                  style={styles.inputFlex}
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={secure}
+                  returnKeyType="done"
+                  placeholder="••••••••"
+                  placeholderTextColor={colors.textPlaceholder}
+                  selectionColor={colors.primary}
+                  cursorColor={colors.primary}
+                />
+                <Pressable onPress={() => setSecure(s => !s)} hitSlop={8}>
+                  <Text style={styles.toggle}>{secure ? "Show" : "Hide"}</Text>
+                </Pressable>
+              </View>
+            </View>
+
+            <Pressable onPress={handleForgot} style={styles.forgot}>
+              <Text style={styles.forgotText}>Forgot password?</Text>
+            </Pressable>
+
+            <TouchableOpacity style={styles.button} onPress={handleSignIn} activeOpacity={0.9}>
+              <Text style={styles.buttonText}>Sign In</Text>
+            </TouchableOpacity>
+
+            <View style={styles.bottomRow}>
+              <Text style={styles.bottomText}>Don't have an account?</Text>
+              <Pressable onPress={handleSignUp}>
+                <Text style={styles.link}>Sign Up</Text>
+              </Pressable>
+            </View>
+          </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

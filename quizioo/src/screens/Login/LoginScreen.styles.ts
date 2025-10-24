@@ -1,89 +1,138 @@
 import { StyleSheet } from "react-native";
 
 export const colors = {
-  bg: "#0F172A",            // tło
-  surface: "rgba(15,23,42,0.55)", // półprzezroczysta powierzchnia
-  border: "rgba(148,163,184,0.35)", // obrys 
-  textPrimary: "#E2E8F0",   // tekst główny 
-  textMuted: "#94A3B8",     // tekst pomocniczy 
-  inputBg: "rgba(241, 245, 249, 0.08)",       // pole wprowadzania 
-  inputBorder: "rgba(226, 232, 240, 0.35)",   // obramowanie inputu 
-  primary: "#0EA5B7",       // przycisk in
-  primaryPressed: "#0891B2",// wariant wciśnięty 
-  secondary: "#4F46E5",     // przycisk up
-  textPlaceholder: "CBD5E1", // placeholder
-  white: "#FFFFFF",
-  shadow: "#000000",
+  background: "#0E1422",
+  surface: "#141B2C",
+  primary: "#17B9C4",
+  onPrimary: "#FFFFFF",
+  text: "#F8FAFC",
+  textMuted: "#A3ADC2",
+  textPlaceholder: "#6B7280",
+  stroke: "#2B3248",
+  inputBg: "#111826",
 };
 
 export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg,
+  container: { 
+	  flex: 1, 
+	  backgroundColor: colors.background 
   },
-  frame: {
-	flex: 1,
-	justifyContent: "center",
-	alignItems: "center",
-	padding: 20,
+  logo: { 
+	  width: 180, 
+	  height: 180, 
+	  alignSelf: "center", 
+	  marginTop: 12, 
+	  marginBottom: 8 
   },
-  content: {
-	width: "100%",
-    maxWidth: 420,      
+
+  card: {
+    backgroundColor: colors.surface,
+    borderRadius: 24,
     padding: 24,
-    borderWidth: 3,
-    borderColor: colors.border, 
-    borderRadius: 16,
-    backgroundColor: colors.surface,   
-    // cień (iOS)
-    shadowColor: colors.shadow,
-    shadowOpacity: 0.15,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 6 },
-    // cień (Android)
-    elevation: 6,
+    gap: 12,
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 8,
+    maxWidth: 520,
+    alignSelf: "center",
+    width: "100%",
   },
-  title: {
-    fontSize: 36,
-    fontWeight: "800",
-    color: colors.textPrimary,
-    letterSpacing: 1,
-    textShadowColor: colors.inputBorder,
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 4,
-    marginBottom: 30,
-	textAlign: "center",
+
+  h1: { 
+	  fontSize: 24, 
+	  fontWeight: "700", 
+	  color: colors.text 
   },
+
+  sub: { 
+	  fontSize: 14, 
+	  color: colors.textMuted, 
+	  marginTop: -4, 
+	  marginBottom: 8 
+  },
+
+  field: { 
+	  marginTop: 8 
+  },
+
+  label: { 
+	  color: colors.textMuted, 
+	  fontSize: 13, 
+	  marginBottom: 6 },
+
   input: {
-	backgroundColor: colors.inputBg,
-    alignSelf: "stretch",
+    backgroundColor: colors.inputBg,
     borderWidth: 1,
-    borderColor: colors.inputBorder,
-    marginBottom: 20,
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    borderRadius: 12,
-    color: colors.textPrimary,
+    borderColor: colors.stroke,
+    borderRadius: 16,
+    height: 52,
+    paddingHorizontal: 16,
+    color: colors.text,
     fontSize: 16,
   },
-  buttons: {
-    alignSelf: "stretch",
-    gap: 16, 
-  },
-  button: {
-    backgroundColor: colors.primary,
-    borderBlockColor: "#000",
-    paddingVertical: 14,
-    borderRadius: 20,
+
+  inputRow: {
+    flexDirection: "row",
     alignItems: "center",
+    backgroundColor: colors.inputBg,
+    borderWidth: 1,
+    borderColor: colors.stroke,
+    borderRadius: 16,
+    height: 52,
+    paddingLeft: 16,
+    paddingRight: 12,
   },
-  signUpButton: {
-    backgroundColor: colors.secondary,
+  inputFlex: { 
+	  flex: 1, 
+	  color: colors.text, 
+	  fontSize: 16 
   },
-  buttonText: {
-    color: colors.white,
-    fontSize: 16,
-    fontWeight: "600",
+
+  toggle: { 
+	  color: colors.textMuted, 
+	  fontWeight: "600" 
+  },
+
+  forgot: { 
+	  alignSelf: "flex-end", 
+	  marginTop: 8 
+  },
+
+  forgotText: { 
+	  color: colors.textMuted, 
+	  fontSize: 13 
+  },
+
+  button: {
+    marginTop: 16,
+    backgroundColor: colors.primary,
+    borderRadius: 16,
+    height: 52,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonText: { 
+	  color: colors.onPrimary, 
+	  fontSize: 16, 
+	  fontWeight: "700" 
+  },
+
+  bottomRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 6,
+    marginTop: 16,
+  },
+  bottomText: { 
+	  color: colors.textMuted 
+  },
+
+  link: { 
+	  color: colors.primary, 
+	  fontWeight: "700" 
   },
 });
 
