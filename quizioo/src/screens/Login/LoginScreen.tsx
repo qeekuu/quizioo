@@ -58,7 +58,7 @@ export default function LoginScreen() {
 
             {/* Password */}
             <View style={styles.field}>
-              <Text style={styles.label}>Hasło</Text>
+              <Text style={styles.label}>Password</Text>
               <View style={styles.inputRow}>
                 <TextInput
                   ref={passwordRef}
