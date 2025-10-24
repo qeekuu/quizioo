@@ -14,7 +14,7 @@ export default function LoginScreen() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
-	const handleSignIn = () => Alert.alert("Sign In clicked");
+	const handleSignIn = () => navigation.navigate("Home");
 
 	const handleSignUp = () => navigation.navigate("Register");
 
@@ -33,7 +33,7 @@ export default function LoginScreen() {
 					cursorColor={colors.primary}
 					/>
 				<TextInput style={styles.input}
-						placeholder="password"
+					placeholder="password"
 					secureTextEntry
 					placeholderTextColor={colors.textPlaceholder}
 					selectionColor={colors.primary}
