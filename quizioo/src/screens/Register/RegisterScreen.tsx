@@ -1,22 +1,13 @@
 import React, { useState } from "react";
 import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { colors, styles } from "./LoginScreen.styles";
-import {NativeStackNavigationProp} from "@react-navigation/native-stack";
-import {RootStackParamList} from "../../navigation/RootNavigator";
-import {useNavigation} from "@react-navigation/native";
+import { colors, styles } from "./RegisterScreen.styles";
 
-type Nav = NativeStackNavigationProp<RootStackParamList, 'Login'>;
+export default function RegisterScreen() {
+  const [count, setCount] = useState(0);
 
-export default function LoginScreen() {
-	const navigation = useNavigation<Nav>();
-
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-
-	const handleSignIn = () => Alert.alert("Sign In clicked");
-
-	const handleSignUp = () => navigation.navigate("Register");
+  const handleSignIn = () => Alert.alert("Sign In clicked");
+  const handleSignUp = () => Alert.alert("Sign Up clicked");
 
   return (
     <SafeAreaView style={styles.container}>
@@ -27,13 +18,13 @@ export default function LoginScreen() {
 				<TextInput
 					style={styles.input}
 					placeholder="e-mail"
-					keyboardType="email-address"
+					keyboardType="email-address" 
 					placeholderTextColor={colors.textPlaceholder}
 					selectionColor={colors.primary}
 					cursorColor={colors.primary}
 					/>
 				<TextInput style={styles.input}
-						placeholder="password"
+					placeholder="password"
 					secureTextEntry
 					placeholderTextColor={colors.textPlaceholder}
 					selectionColor={colors.primary}
