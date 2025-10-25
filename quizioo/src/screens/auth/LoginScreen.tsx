@@ -18,7 +18,7 @@ export default function LoginScreen() {
 
   const handleSignIn = () => navigation.navigate("Home");
   const handleSignUp = () => navigation.navigate("Register");
-  const handleForgot = () => Alert.alert("Forgot password");
+  const handleForgot = () => navigation.navigate("ForgotPassword");
 
   return (
     <SafeAreaView style={styles.container}>
