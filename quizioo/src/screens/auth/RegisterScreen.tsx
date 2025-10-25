@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import {Alert, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View, Image, Pressable,} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { colors, styles } from "./RegisterScreen.styles";
+import { colors, styles } from "./auth.styles";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {RootStackParamList} from "../../navigation/RootNavigator";
 import {useNavigation} from "expo-router";
