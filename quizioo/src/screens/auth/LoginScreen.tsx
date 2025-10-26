@@ -16,7 +16,10 @@ export default function LoginScreen() {
 
   const passwordRef = useRef<TextInput>(null);
 
-  const handleSignIn = () => navigation.navigate("Home");
+  const handleSignIn = () => navigation.reset({
+	index: 0,
+	routes: [{ name: "App" }],
+  });
   const handleSignUp = () => navigation.navigate("Register");
   const handleForgot = () => navigation.navigate("ForgotPassword");
 

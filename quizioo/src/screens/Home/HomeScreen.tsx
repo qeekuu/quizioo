@@ -11,7 +11,7 @@ type Nav = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 export default function HomeScreen() {
 	const navigation = useNavigation<Nav>();
 
-	const handleSignIn = () => navigation.navigate("QuizAdd");
+	const handleSignIn = () => navigation.navigate("Login"); // tymczasowo do Login
 
   return (
     <SafeAreaView style={styles.container}>

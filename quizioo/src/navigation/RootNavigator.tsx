@@ -7,6 +7,7 @@ import RegisterScreen from "../screens/auth/RegisterScreen";
 import forgotPasswordScreen from "../screens/auth/forgotPasswordScreen";
 import HomeScreen from "../screens/Home/HomeScreen";
 import QuizAddScreen from "../screens/QuizAdd/QuizAddScreen";
+import tabNav from "./tabNav";
 
 // typy tras
 export type RootStackParamList = {
@@ -14,7 +15,7 @@ export type RootStackParamList = {
 	Register: undefined;
 	ForgotPassword: undefined;
 	Home: undefined;
-	QuizAdd: undefined;
+	App: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -41,12 +42,11 @@ export default function RootNavigator(){
 			<Stack.Screen
 				name="Home"
 				component={HomeScreen}
-				options={{ title: "Home" }}
 			/>
 			<Stack.Screen
-				name="QuizAdd"
-				component={QuizAddScreen}
-				options={{ title: "QuizAdd"}}
+				name="App"
+				component={tabNav}
+				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>
 	</NavigationContainer>
