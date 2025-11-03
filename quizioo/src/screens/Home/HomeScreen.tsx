@@ -15,9 +15,11 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-		<View style={styles.frame}>
-			<View style={styles.content}>
-				<Text style={styles.title}>QuiZioo</Text>
+		<View style={styles.card}>
+			<Text style={styles.title}>Title</Text>
+		</View>
+
+
 
 				<View style={styles.buttons}>
 					<TouchableOpacity style={styles.button} onPress={handleSignIn}>
@@ -25,8 +27,6 @@ export default function HomeScreen() {
 					</TouchableOpacity>
 
 				</View>
-			</View>
-		</View>
     </SafeAreaView>
   );
 }

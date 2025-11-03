@@ -1,25 +1,22 @@
 import { StyleSheet } from "react-native";
 
 export const colors = {
-  bg: "#0F172A",            // tło
-  surface: "rgba(15,23,42,0.55)", // półprzezroczysta powierzchnia
-  border: "rgba(148,163,184,0.35)", // obrys 
-  textPrimary: "#E2E8F0",   // tekst główny 
-  textMuted: "#94A3B8",     // tekst pomocniczy 
-  inputBg: "rgba(241, 245, 249, 0.08)",       // pole wprowadzania 
-  inputBorder: "rgba(226, 232, 240, 0.35)",   // obramowanie inputu 
-  primary: "#0EA5B7",       // przycisk in
-  primaryPressed: "#0891B2",// wariant wciśnięty 
-  secondary: "#4F46E5",     // przycisk up
-  textPlaceholder: "CBD5E1", // placeholder
-  white: "#FFFFFF",
-  shadow: "#000000",
+  background: "#0E1422",
+  surface: "#141B2C",
+  primary: "#17B9C4",
+  onPrimary: "#FFFFFF",
+  text: "#F8FAFC",
+  textMuted: "#A3ADC2",
+  textPlaceholder: "#6B7280",
+  stroke: "#2B3248",
+  inputBg: "#111826",
 };
+
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.bg,
+    backgroundColor: colors.background,
   },
   frame: {
 	flex: 1,
@@ -31,12 +28,28 @@ export const styles = StyleSheet.create({
 	width: "100%",
     maxWidth: 420,      
   },
+
+  card: {
+    backgroundColor: colors.surface,
+    borderRadius: 24,
+    padding: 24,
+    gap: 12,
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 8,
+    maxWidth: 520,
+    alignSelf: "center",
+    width: "100%",
+  },
+
   title: {
     fontSize: 36,
     fontWeight: "800",
-    color: colors.textPrimary,
+    color: colors.text,
     letterSpacing: 1,
-    textShadowColor: colors.inputBorder,
+    textShadowColor: colors.surface,
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 4,
     marginBottom: 30,
@@ -46,12 +59,12 @@ export const styles = StyleSheet.create({
 	backgroundColor: colors.inputBg,
     alignSelf: "stretch",
     borderWidth: 1,
-    borderColor: colors.inputBorder,
+    borderColor: colors.inputBg,
     marginBottom: 20,
     paddingVertical: 12,
     paddingHorizontal: 14,
     borderRadius: 12,
-    color: colors.textPrimary,
+    color: colors.text,
     fontSize: 16,
   },
   buttons: {
@@ -66,10 +79,10 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   signUpButton: {
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.background,
   },
   buttonText: {
-    color: colors.white,
+    color: colors.surface,
     fontSize: 16,
     fontWeight: "600",
   },
