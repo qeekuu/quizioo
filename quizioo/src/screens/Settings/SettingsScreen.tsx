@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Text, TextInput, TouchableOpacity, View, StatusBar, FlatList } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { colors, styles } from "./SettingsScreen.styles";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
@@ -15,20 +15,17 @@ export default function HomeScreen() {
 
   return (
 	<SafeAreaProvider>
-    <SafeAreaView style={styles.container}>
-		<View style={styles.card}>
-			<Text style={styles.title}>Title</Text>
-		</View>
-
-
-
-				<View style={styles.buttons}>
-					<TouchableOpacity style={styles.button} onPress={handleSignIn}>
-						<Text style={styles.buttonText}>New Quiz</Text>
-					</TouchableOpacity>
-
+		<SafeAreaView style={styles.container}>
+			<StatusBar barStyle={"light-content"} />
+				<View style={styles.content}>
+					<View style={styles.topBar}>
+						<View>
+							<Text style={styles.settingLabel}>Settings</Text>
+						</View>	
+					</View>	
 				</View>
-    </SafeAreaView>
+
+		</SafeAreaView>
 	</SafeAreaProvider>
   );
 }
