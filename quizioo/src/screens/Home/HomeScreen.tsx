@@ -15,18 +15,13 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-		<View style={styles.card}>
-			<Text style={styles.title}>Title</Text>
+		<View style={styles.header}>
+
 		</View>
 
 
 
-				<View style={styles.buttons}>
-					<TouchableOpacity style={styles.button} onPress={handleSignIn}>
-						<Text style={styles.buttonText}>New Quiz</Text>
-					</TouchableOpacity>
 
-				</View>
     </SafeAreaView>
   );
 }
