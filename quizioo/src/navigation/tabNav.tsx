@@ -2,16 +2,18 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/Home/HomeScreen";
 import QuizAddScreen from "../screens/QuizAdd/QuizAddScreen";
+import SettingsScreen from "../screens/Settings/SettingsScreen";
 import {Ionicons} from "@expo/vector-icons";
 
 export type TabParamList = {
 	Home: undefined;
 	QuizAdd: undefined;
+	Settings: undefined;
 };
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
-export default function tabNav(){
+export default function TabNav(){
 	return (
 		<Tab.Navigator screenOptions={{ 
 			tabBarActiveTintColor: "#17B9C4", 
@@ -44,6 +46,14 @@ export default function tabNav(){
 				options={{
 					title: "QuizAdd",
 					tabBarIcon: ({ color, size }) => <Ionicons name ="add" color={color} size={size} />
+				}}
+			/>
+			<Tab.Screen
+				name="Settings"
+				component={SettingsScreen}
+				options={{
+					title: "Settings",
+					tabBarIcon: ({ color, size }) => <Ionicons name ="settings" color={color} size={size} />
 				}}
 			/>
 		</Tab.Navigator>
