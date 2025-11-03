@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import {Alert, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View, Image, Pressable,} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { colors, styles } from "./auth.styles";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../navigation/RootNavigator";
@@ -24,6 +24,7 @@ export default function LoginScreen() {
   const handleForgot = () => navigation.navigate("ForgotPassword");
 
   return (
+	<SafeAreaProvider>
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -97,6 +98,7 @@ export default function LoginScreen() {
           </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
+	</SafeAreaProvider>
   );
 }
 
