@@ -24,9 +24,15 @@ export default function QuizAddScreen() {
     { label: "Custom", correctAnswer: "", incorrectAnswer: "" },
   ];
 
-  const [pointType, setPointType] = useState<PointTypeItem["label"]>("Regular");
-  const [correctPoints, setCorrectPoints] = useState("1");
-  const [incorrectPoints, setIncorrectPoints] = useState("-1");
+  const quizTypeTypes = [
+	{ label: "Math" },
+	{ label: 'Physics' },
+	{ label: 'Language' },
+  ];
+
+  const [pointType, setPointType] = useState<PointTypeItem["label"] | null>(null);
+  const [correctPoints, setCorrectPoints] = useState("");
+  const [incorrectPoints, setIncorrectPoints] = useState("");
 
   return (
     <SafeAreaView style={styles.container}>
@@ -47,8 +53,23 @@ export default function QuizAddScreen() {
             <TextInput style={styles.createQuizSectionInput} />
 
             <Text style={styles.createQuizSectionText}>Type:</Text>
-            <TextInput style={styles.createQuizSectionInput} />
+			<Dropdown
+			   data={quizTypeTypes}
+			   labelField="label"
+			   valueField="label"
+			   placeholder="Select Type"
+			   value={quizTypeTypes}
+			   onChange={(item => item.label)}
 
+              style={styles.dropdown}
+			  placeholderStyle={styles.dropdownPlaceholder}
+			  selectedTextStyle={styles.dropdownSelectedText}
+			  containerStyle={styles.dropdownListContainer}
+			  itemTextStyle={styles.dropdownItemText}
+			  itemContainerStyle={styles.dropdownItemContainer}
+			  activeColor={styles.dropdownActiveColor}
+
+			/>
             <Text style={styles.createQuizSectionText}>Points:</Text>
             <Dropdown
               data={pointTypes}
@@ -92,11 +113,11 @@ export default function QuizAddScreen() {
 				  placeholderTextColor={"#FFFFFF"}
                 />
               </View>
-            ) : (
+            ) : pointType ? (
               <Text style={styles.text}>
                 Correct: {correctPoints} | Incorrect: {incorrectPoints}
               </Text>
-            )}
+            ): null}
 
             <Text style={styles.createQuizSectionText}>Number of Questions:</Text>
             <TextInput keyboardType="number-pad" style={styles.createQuizSectionInput} />
