@@ -1,10 +1,11 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { View, Text, TouchableOpacity, FlatList, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, FlatList, TextInput, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "./QuizAddScreen.styles";
 import { RootStackParamList } from "@/app/(navigation)/types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-
+import { api } from "@/app/(api)/client";
+import { API_BASE } from "@/app/(api)/config";
 type Props = NativeStackScreenProps<RootStackParamList, "Questions">;
 
 type QuestionItem = {
@@ -14,6 +15,8 @@ type QuestionItem = {
 };
 
 export default function QuestionsScreen({ route }: Props) {
+console.log("API_BASE =", API_BASE);
+	
   const { quizName, quizType, correctPoints, incorrectPoints, numQuestions } = route.params;
 
   // tablica obiektów pytań (pytanie + 4 odpowiedzi + poprawna)
@@ -128,9 +131,30 @@ export default function QuestionsScreen({ route }: Props) {
     <View style={{ paddingHorizontal: 25, paddingBottom: 16 }}>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => {
-          // [{ question, answers: [A,B,C,D], correctIndex }, ...]
-          console.log(questions);
+        onPress={async () => {
+			// żeby nie zapisywać pustych
+			const hasEmpty = questions.some(
+				(q) =>
+					!q.question.trim() || q.answers.some((a) => !a.trim())
+			);
+
+			if(hasEmpty)
+				return Alert.alert("Validation", "Fill all the questions and answers.");
+			
+			try {
+				await api.createQuiz({
+					quizName : quizName.trim(),
+					quizType,
+					correctPoints,
+					incorrectPoints,
+					questions,
+					createdAt: new Date().toISOString(),
+				});
+
+				Alert.alert("Saved", "Quiz saved to db.json");
+			} catch(e: any){
+				Alert.alert("Error", e?.message ?? "Quiz has not been saved");
+			}
         }}
       >
         <Text style={styles.buttonText}>Save Questions</Text>

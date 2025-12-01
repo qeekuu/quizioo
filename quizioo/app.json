@@ -19,7 +19,8 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.domsonhere.quizioo"
     },
     "web": {
       "output": "static",
@@ -39,12 +40,14 @@
           }
         }
       ],
-	  [
-		"expo-font",
-		{
-			"fonts": ["node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.ttf"]
-		}
-	  ]
+      [
+        "expo-font",
+        {
+          "fonts": [
+
+          ]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
