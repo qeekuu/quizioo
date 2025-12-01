@@ -6,6 +6,13 @@ export type RootStackParamList = {
 	App: undefined;
 	Settings: undefined;
 	QuizAdd: undefined;
+	Questions: {
+		quizName: string;
+		quizType: string;
+		correctPoints: number;
+		incorrectPoints: number;
+		numQuestions: number;
+	};
 };
 
 export type TabParamList = {

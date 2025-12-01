@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Dropdown } from "react-native-element-dropdown";
 import { styles } from "./QuizAddScreen.styles";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RootStackParamList } from "@/app/(navigation)/RootNavigator";
+import { RootStackParamList } from "@/app/(navigation)/types";
 import { useNavigation } from "@react-navigation/native";
 
 type Nav = NativeStackNavigationProp<RootStackParamList, "QuizAdd">;
@@ -17,7 +17,6 @@ type PointTypeItem = {
 
 export default function QuizAddScreen() {
   const navigation = useNavigation<Nav>();
-  const handleSignIn = () => Alert.alert("New Quiz clicked");
 
   const pointTypes: PointTypeItem[] = [
     { label: "Regular", correctAnswer: "1", incorrectAnswer: "-1" },
@@ -30,9 +29,36 @@ export default function QuizAddScreen() {
 	{ label: 'Language' },
   ];
 
+  const [quizName, setQuizName] = useState("");
+  const [quizType, setQuizType] = useState<string | null>(null);
+
   const [pointType, setPointType] = useState<PointTypeItem["label"] | null>(null);
   const [correctPoints, setCorrectPoints] = useState("");
   const [incorrectPoints, setIncorrectPoints] = useState("");
+
+  const [numQuestions, setNumQuestions] = useState("");
+
+  const handleQuizAdd = () => {
+	const nq = parseInt(numQuestions, 10);
+
+	if (!quizName.trim()) return Alert.alert("Validation", "Enter quiz name");
+    if (!quizType) return Alert.alert("Validation", "Select quiz type");
+    if (!pointType) return Alert.alert("Validation", "Select points type");
+    if (!Number.isFinite(nq) || nq <= 0) return Alert.alert("Validation", "Enter correct number of questions (> 0)");
+
+	const cp = Number(correctPoints);
+    const ip = Number(incorrectPoints);
+    if (!Number.isFinite(cp) || !Number.isFinite(ip)) return Alert.alert("Validation", "Points must be numbers");
+
+	navigation.navigate("Questions", {
+      quizName: quizName.trim(),
+      quizType,
+      correctPoints: cp,
+      incorrectPoints: ip,
+      numQuestions: nq,
+    });
+	
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -50,7 +76,11 @@ export default function QuizAddScreen() {
         >
           <View style={styles.createQuizSection}>
             <Text style={styles.createQuizSectionText}>Quiz name:</Text>
-            <TextInput style={styles.createQuizSectionInput} />
+            <TextInput
+				style={styles.createQuizSectionInput} 
+				value={quizName}
+				onChangeText={setQuizName}
+			/>
 
             <Text style={styles.createQuizSectionText}>Type:</Text>
 			<Dropdown
@@ -58,8 +88,8 @@ export default function QuizAddScreen() {
 			   labelField="label"
 			   valueField="label"
 			   placeholder="Select Type"
-			   value={quizTypeTypes}
-			   onChange={(item => item.label)}
+			   value={quizType}
+			   onChange={(item: { label: string }) => setQuizType(item.label)}
 
               style={styles.dropdown}
 			  placeholderStyle={styles.dropdownPlaceholder}
@@ -120,9 +150,14 @@ export default function QuizAddScreen() {
             ): null}
 
             <Text style={styles.createQuizSectionText}>Number of Questions:</Text>
-            <TextInput keyboardType="number-pad" style={styles.createQuizSectionInput} />
+            <TextInput 
+				keyboardType="number-pad" 
+				style={styles.createQuizSectionInput}
+				value={numQuestions}
+				onChangeText={setNumQuestions}
+			/>
 
-			<TouchableOpacity style={styles.button}>
+			<TouchableOpacity style={styles.button} onPress={handleQuizAdd}>
 				<Text style={styles.buttonText}>Create Quiz</Text>
 			</TouchableOpacity>
           </View>

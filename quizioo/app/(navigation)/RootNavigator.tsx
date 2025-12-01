@@ -9,6 +9,7 @@ import HomeScreen from "../(screens)/home/HomeScreen";
 import QuizAddScreen from "../(screens)/QuizAdd/QuizAddScreen";
 import TabNav from "./TabNav";
 import { RootStackParamList } from "./types";
+import QuestionsScreen from "../(screens)/QuizAdd/QuestionsScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -37,6 +38,12 @@ export default function RootNavigator(){
 				name="Home"
 				component={HomeScreen}
 			/>
+			<Stack.Screen
+				name="Questions"
+				component={QuestionsScreen}
+				options={{ headerShown: false }}
+			/>
+	
 			<Stack.Screen
 				name="App"
 				component={TabNav}

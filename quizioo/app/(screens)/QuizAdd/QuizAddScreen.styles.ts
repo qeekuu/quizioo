@@ -143,4 +143,20 @@ export const styles = StyleSheet.create({
 	  fontWeight: "700" 
   },
 
+  quizInfText: {
+	color: colors.text,
+	letterSpacing: 0.7,
+	fontWeight: 'bold',
+	fontSize: 17,
+	margin: 10,
+  },
+
+  paramText: {
+	color: colors.textMuted,
+	letterSpacing: 0.7,
+	fontWeight: 'bold',
+	fontSize: 12,
+	padding: 3,
+  }
+
 });
