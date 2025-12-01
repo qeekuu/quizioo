@@ -1,0 +1,24 @@
+{
+  "quizzes": [
+    {
+      "id": "d783",
+      "quizName": "Math",
+      "quizType": "Math",
+      "correctPoints": 1,
+      "incorrectPoints": -1,
+      "questions": [
+        {
+          "question": "2+2",
+          "answers": [
+            "1",
+            "4",
+            "2",
+            "0"
+          ],
+          "correctIndex": 1
+        }
+      ],
+      "createdAt": "2025-12-01T10:08:45.335Z"
+    }
+  ]
+}
