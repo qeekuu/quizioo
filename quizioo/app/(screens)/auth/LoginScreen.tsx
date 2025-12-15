@@ -3,23 +3,42 @@ import {Alert, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { colors, styles } from "./auth.styles";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RootStackParamList } from "@/app/(navigation)/RootNavigator";
+import { RootStackParamList } from "@/app/(navigation)/types";
 import { useNavigation } from "@react-navigation/native";
+import { api } from "@/app/(api)/client";
+import { useAuth } from "@/app/(context)/AppContext";
 
 type Nav = NativeStackNavigationProp<RootStackParamList, "Login">;
 
 export default function LoginScreen() {
+  const { login } = useAuth();
   const navigation = useNavigation<Nav>();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [secure, setSecure] = useState(true);
 
   const passwordRef = useRef<TextInput>(null);
 
-  const handleSignIn = () => navigation.reset({
-	index: 0,
-	routes: [{ name: "App" }],
-  });
+ const handleSignIn = async () => {
+    const e = email.trim().toLowerCase();
+    const p = password;
+
+    if (!e || !p) return Alert.alert("Validation", "Email and password are required.");
+
+    try {
+      const user = await login({ email: e, password: p}); 
+      Alert.alert("Welcome", `Logged in as ${user.username}`);
+
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "App" }],
+      });
+    } catch (err: any) {
+      Alert.alert("Error", err?.message ?? "Login failed");
+    }
+  }; 
+
   const handleSignUp = () => navigation.navigate("Register");
   const handleForgot = () => navigation.navigate("ForgotPassword");
 
@@ -76,6 +95,7 @@ export default function LoginScreen() {
                   value={password}
                   onChangeText={setPassword}
                   secureTextEntry={secure}
+				  autoCapitalize="none"
                   returnKeyType="done"
                   placeholder="********"
                   placeholderTextColor={colors.textPlaceholder}
@@ -92,7 +112,7 @@ export default function LoginScreen() {
               <Text style={styles.forgotText}>Forgot password?</Text>
             </Pressable>
 
-            <TouchableOpacity style={styles.button} onPress={onLogin} activeOpacity={0.9}>
+            <TouchableOpacity style={styles.button} onPress={handleSignIn} activeOpacity={0.9}>
               <Text style={styles.buttonText}>Sign In</Text>
             </TouchableOpacity>
 

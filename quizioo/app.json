@@ -43,11 +43,10 @@
       [
         "expo-font",
         {
-          "fonts": [
-
-          ]
+          "fonts": []
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,

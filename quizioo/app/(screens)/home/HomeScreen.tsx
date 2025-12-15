@@ -4,16 +4,32 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { colors, styles } from "./HomeScreen.styles";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/(navigation)/types";
-import { useNavigation, Link } from "@react-navigation/native";
+import { useNavigation, Link, useRoute } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
+import { useEffect } from "react";
+import { api } from "@/app/(api)/client";
+import type { Quiz } from "@/app/(api)/types";
+import { TabParamList } from "@/app/(navigation)/types";
+import { useAuth } from "@/app/(context)/AppContext";
+
 import {blue} from "react-native-reanimated/lib/typescript/Colors";
 
+import type { RouteProp } from "@react-navigation/native";
+
 type Nav = NativeStackNavigationProp<RootStackParamList, 'Home'>;
+type HomeRoute = RouteProp<TabParamList, "Home">;
 
 
 export default function HomeScreen() {
+	const { state } = useAuth();
 	const navigation = useNavigation<Nav>();
+	const route = useRoute<HomeRoute>();
+	
+	const userName = state.user?.username ?? "Guest";
+
+	const [quizzes, setQuizzes] = useState<Quiz[]>([]);
+	const [loading, setLoading] = useState(true);
 
 	const handleSignIn = () => navigation.navigate("Login"); // tymczasowo do Login
 
@@ -29,28 +45,51 @@ export default function HomeScreen() {
 		},
 	];
 
-	type ItemProps = {title: string, subTitle: string};
+	useEffect(() => {
+    let mounted = true;
 
-	const Item = ({title, subTitle}: ItemProps) => (
-		<TouchableOpacity style={styles.containerItem}>
-			<View style={styles.leftIcon}>
-				<Ionicons name="book-sharp" size={32} color="rgba(100, 200, 255, 0.8)" />	
-			</View>
+    const loadQuizzes = async () => {
+      try {
+        const data = await api.listQuizzes();
+        if (mounted) setQuizzes(data);
+      } catch (e) {
+        Alert.alert("Error", "Cannot load quizzes");
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
 
-			<View style={styles.centerText}>
-				<Text style={styles.title}>{title}</Text>
-				<Text style={styles.subTitle}>{subTitle}</Text>
-			</View>
-			<View style={styles.rightArrow}>
-				<Text style={styles.quizArrow}>{'>'}</Text>
-			</View>
-		</TouchableOpacity>
+    loadQuizzes();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+
+	type ItemProps = {quiz: Quiz};
+
+	const Item = ({ quiz }: ItemProps) => (
+	<TouchableOpacity style={styles.containerItem}>
+		<View style={styles.leftIcon}>
+		<Ionicons name="book-sharp" size={32} color="rgba(100, 200, 255, 0.8)" />
+		</View>
+
+		<View style={styles.centerText}>
+		<Text style={styles.title}>{quiz.quizName}</Text>
+		<Text style={styles.subTitle}>{quiz.quizType}</Text>
+		</View>
+
+		<View style={styles.rightArrow}>
+		<Text style={styles.quizArrow}>{'>'}</Text>
+		</View>
+	</TouchableOpacity>
 	);
+
 
 	 return (
 		 <SafeAreaView style={styles.container}>
 			<View style={styles.topBar}>
-				<Text style={styles.topBarText}>UserName</Text>
+				<Text style={styles.topBarText}>{userName}</Text>
 				<View style={styles.topBarImageBox}>
 					<Image style={styles.topBarImage} source={""} contentFit="contain"/>
 				</View>
@@ -71,10 +110,18 @@ export default function HomeScreen() {
 			</View>
 
 			<FlatList
-				data={DATA}
-				renderItem={({item}) => <Item title={item.title} subTitle={item.subTitle} />}
-				keyExtractor={item => item.id}
+				data={quizzes}
+				keyExtractor={(item) => item.id.toString()}
+				renderItem={({ item }) => <Item quiz={item} />}
+				ListEmptyComponent={
+					!loading ? (
+						<Text style={{ textAlign: "center", color: "#aaa", marginTop: 20 }}>
+							No quizzes available
+						</Text>
+					) : null
+				}
 			/>
+			
 		 </SafeAreaView>
   );
 }
