@@ -15,7 +15,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootNavigator(){
 
-	const [isLoggedIn] = useState(true);
+	const [isLoggedIn] = useState(false);
 
 	return(
 		<Stack.Navigator initialRouteName={isLoggedIn? "App" : "Login"}>
@@ -37,6 +37,7 @@ export default function RootNavigator(){
 			<Stack.Screen
 				name="Home"
 				component={HomeScreen}
+				options={{headerShown: false}}
 			/>
 			<Stack.Screen
 				name="Questions"

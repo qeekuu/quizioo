@@ -7,6 +7,7 @@ import QuizAddScreen from "../(screens)/QuizAdd/QuizAddScreen";
 import SettingsScreen from "../(screens)/Settings/SettingsScreen";
 import { TabParamList } from "./types";
 import ProfileScreen from "../(screens)/Profile/ProfileScreen";
+import QrScannerScreen from "../(screens)/Camera/QeScannerScreen";
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
@@ -59,6 +60,14 @@ export default function TabNav(){
 				options={{
 					title: "Profile",
 					tabBarIcon: ({color, size}) => <Ionicons name="person" color={color} size={size} />
+				}}
+			/>
+			<Tab.Screen
+				name="QrCamera"
+				component={QrScannerScreen}
+				options = {{
+					title:"Qr Scanner",
+					tabBarIcon: ({color, size}) => <Ionicons name="qr-code" color={color} size={size} />
 				}}
 			/>
 			<Tab.Screen

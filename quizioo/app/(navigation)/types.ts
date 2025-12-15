@@ -1,3 +1,5 @@
+import type { User } from "@/app/(api)/types";
+
 export type RootStackParamList = {
 	Login: undefined;
 	Register: undefined;
@@ -16,11 +18,12 @@ export type RootStackParamList = {
 };
 
 export type TabParamList = {
-	Home: undefined;
+	Home: {user: User};
 	Quizzes: undefined;
 	QuizAdd: undefined;
 	Profile: undefined;
 	Settings: undefined;
+	QrCamera: undefined;
 };
 
 
