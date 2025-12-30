@@ -26,6 +26,20 @@
       "email": "user@test.com",
       "password": "user",
       "createdAt": "2025-12-15T14:10:25.155Z"
+    },
+    {
+      "id": "c921e729b8c4e",
+      "username": "user123",
+      "email": "user1@test.com",
+      "password": "user1",
+      "createdAt": "2025-12-15T15:03:28.961Z"
+    },
+    {
+      "id": "f84d89a229f37",
+      "username": "admin",
+      "email": "admin@test.com",
+      "password": "admin",
+      "createdAt": "2025-12-30T20:14:40.800Z"
     }
   ],
   "quizzes": [
