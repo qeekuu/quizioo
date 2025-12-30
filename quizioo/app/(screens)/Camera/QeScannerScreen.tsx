@@ -52,7 +52,7 @@ export default function QrScannerScreen() {
 
         {scanned && (
           <TouchableOpacity onPress={() => setScanned(false)} style={styles.btn}>
-            <Text style={styles.btnText}>Skanuj ponownie</Text>
+            <Text style={styles.btnText}>Scan Again</Text>
           </TouchableOpacity>
         )}
       </View>
