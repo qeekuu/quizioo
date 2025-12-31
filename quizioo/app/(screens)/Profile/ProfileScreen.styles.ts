@@ -64,16 +64,12 @@ export const styles = StyleSheet.create({
 		paddingRight: 15,
 		margin: 10,
 		borderRadius: 75,
-		borderWidth: 7,
+		borderWidth: 5,
 		borderColor: colors.bordercolor,
 	},
 
 	staticticsCard: {
-		paddingLeft: 15,
-		paddingRight: 15,
 		margin: 10,
-		borderTopWidth: 7,
-		borderTopColor: colors.bordercolor,
 	},
 
 	button: {
@@ -83,7 +79,6 @@ export const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'flex-start',
 		padding: 12,
-		marginTop: 16,
 		borderRadius: 25,
 		borderWidth: 5,
 		borderColor: colors.bordercolor,
@@ -117,7 +112,15 @@ export const styles = StyleSheet.create({
     },
 
 	achievementsCard: {
+		height: 225,
+		flexDirection: 'row',
+		justifyContent: 'flex-start',
+		padding: 12,
+		margin: 10,
+		borderRadius: 16,
+		borderWidth: 5,
+		borderColor: colors.bordercolor,
+	},
 
-	}
 
 });
