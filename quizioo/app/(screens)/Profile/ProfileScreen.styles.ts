@@ -111,9 +111,17 @@ export const styles = StyleSheet.create({
 		fontSize: 17,
     },
 
+	dailyStreekText: {
+		color: colors.text,
+		letterSpacing: 0.7,
+		fontWeight: 'bold',
+		fontSize: 17,
+		marginBottom: 15,
+    },
+
 	achievementsCard: {
 		height: 225,
-		flexDirection: 'row',
+		flexDirection: 'column',
 		justifyContent: 'flex-start',
 		padding: 12,
 		margin: 10,
@@ -121,6 +129,5 @@ export const styles = StyleSheet.create({
 		borderWidth: 5,
 		borderColor: colors.bordercolor,
 	},
-
 
 });

@@ -5,6 +5,7 @@ import { styles, colors } from "../Profile/ProfileScreen.styles";
 import {Ionicons} from "@expo/vector-icons";
 import { Link } from "@react-navigation/native";
 import { useAuth } from "@/app/(context)/AppContext";
+import WeeklyStreak from "../components/WeeklyStreak";
 
 export default function ProfileScreen()
 {
@@ -25,7 +26,14 @@ export default function ProfileScreen()
 				<Link screen="QuizAdd" params={{ id: 'quizadd' }}style={styles.textLink}>See all</Link>
 			</View>
 			<View style={styles.achievementsCard}>
-				<Text style={styles.achievementsText}>Daily Streek</Text>
+				<Text style={styles.dailyStreekText}>Daily Streek</Text>
+				<View style={styles.staticticsCard}>
+					<WeeklyStreak
+						week={[true, true, true, false, true, true, true]}
+						currentStreak={5}
+						bestStreak={18}
+					/>
+				</View>
 			</View>
             {/* Zmienić Link */}
 			<View style={styles.staticticsCard}>
