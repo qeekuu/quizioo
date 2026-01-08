@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import * as SecureStore from "expo-secure-store";
 import { api } from "@/app/(api)/client";
 import type { User, LoginDTO, RegisterDTO } from "@/app/(api)/types";
@@ -35,6 +35,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     boot();
   }, []);
 
+  {/*
   const login = async (dto: LoginDTO) => {
     const u = await api.login(dto);
     await SecureStore.setItemAsync(USER_KEY, JSON.stringify(u));
@@ -59,8 +60,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     () => ({ state: { user, isReady }, login, register, logout }),
     [user, isReady]
   );
+  */}
+	const login = useCallback(async (dto: LoginDTO) => {
+		const u = await api.login(dto);
+		await SecureStore.setItemAsync(USER_KEY, JSON.stringify(u));
+		setUser(u);
+		return u;
+	}, []);
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+	const register = useCallback(async(dto: RegisterDTO) => {
+		const u = await api.register(dto);
+		await SecureStore.setItemAsync(USER_KEY, JSON.stringify(u));
+		setUser(u);
+		return u;
+	}, []);
+
+	const logout = useCallback(async () => {
+		await SecureStore.deleteItemAsync(USER_KEY);
+		setUser(null);
+	}, []);
+
+	const value = useMemo(
+		() => ({ state: { user, isReady }, login, register, logout }),
+		[user, isReady, login, register, logout]
+	);
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
