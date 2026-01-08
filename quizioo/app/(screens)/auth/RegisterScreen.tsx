@@ -24,28 +24,6 @@ export default function RegisterScreen() {
 	const confirmRef = useRef<TextInput>(null);
 	const emailRef = useRef<TextInput>(null);
 
-	const handleSignUp22 = async () => {
-    const e = email.trim().toLowerCase();
-    const p = password;
-	const u = username;
-
-  if (!u || !e || !p) return Alert.alert("Validation", "Username, email and password are required.");
-
-  try {
-    await api.register({
-	  username: u,
-      email: e,
-      password: p,
-      createdAt: new Date().toISOString(),
-    });
-
-    Alert.alert("Saved", "Account created.");
-    navigation.navigate("Login");
-  } catch (err: any) {
-    Alert.alert("Error", err?.message ?? "Registration failed");
-  }
-};
-
 const handleSignUp = async () => {
     const e = email.trim().toLowerCase();
     const p = password;
@@ -71,7 +49,6 @@ const handleSignUp = async () => {
   };
 
   return (
-<SafeAreaProvider>
 <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -184,6 +161,5 @@ const handleSignUp = async () => {
 		  </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
-</SafeAreaProvider>
   );
 }
