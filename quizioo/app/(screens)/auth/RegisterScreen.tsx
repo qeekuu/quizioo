@@ -41,7 +41,7 @@ const handleSignUp = async () => {
       });
 
 
-    navigation.navigate("Login");
+    navigation.navigate("Home");
 
     } catch (err: any) {
       Alert.alert("Error", err?.message ?? "Registration failed");
