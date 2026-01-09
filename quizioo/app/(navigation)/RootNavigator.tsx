@@ -10,15 +10,18 @@ import QuizAddScreen from "../(screens)/QuizAdd/QuizAddScreen";
 import TabNav from "./TabNav";
 import { RootStackParamList } from "./types";
 import QuestionsScreen from "../(screens)/QuizAdd/QuestionsScreen";
+import {useAuth} from "../(context)/AppContext";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootNavigator(){
 
-	const [isLoggedIn] = useState(false);
+	const { state } = useAuth();
+
+	if(!state.isReady) return null;
 
 	return(
-		<Stack.Navigator initialRouteName={isLoggedIn? "App" : "Login"}>
+		<Stack.Navigator initialRouteName={state.user ? "App" : "Login"}>
 			<Stack.Screen
 				name="Login"
 				component={LoginScreen}
