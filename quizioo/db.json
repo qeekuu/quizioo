@@ -85,5 +85,20 @@
       ],
       "createdAt": "2025-12-15T14:12:01.835Z"
     }
+  ],
+  "categories": [
+	  { "id": 1, "label": "Exact Sciences" },
+	  { "id": 2, "label": "Humanities" },
+	  { "id": 3, "label": "Languages" },
+	  { "id": 4, "label": "Technology" },
+	  { "id": 5, "label": "Computer Science" },
+	  { "id": 6, "label": "Mathematics" },
+	  { "id": 7, "label": "Physics" },
+	  { "id": 8, "label": "Biology" },
+	  { "id": 9, "label": "History" },
+	  { "id": 10, "label": "Geography" },
+	  { "id": 11, "label": "General Knowledge" },
+	  { "id": 12, "label": "Logic & Reasoning" },
+	  { "id": 13, "label": "Other"}
   ]
 }
