@@ -27,6 +27,7 @@ export default function HomeScreen() {
 	const route = useRoute<HomeRoute>();
 	
 	const userName = state.user?.username ?? "Guest";
+	const avatarUri = state.user?.avatarUri;
 
 	const [quizzes, setQuizzes] = useState<Quiz[]>([]);
 	const [loading, setLoading] = useState(true);
@@ -91,7 +92,19 @@ export default function HomeScreen() {
 			<View style={styles.topBar}>
 				<Text style={styles.topBarText}>{userName}</Text>
 				<View style={styles.topBarImageBox}>
-					<Image style={styles.topBarImage} source={""} contentFit="contain"/>
+					{avatarUri ? (
+						<Image
+							style={styles.topBarImage}
+							source={{uri: avatarUri}}
+							contentFit="cover"
+							transition={150}
+						/>
+					) : (
+						<View style={styles.topBarAvatarFallback}>
+							<Ionicons name="person-circle-outline" size={28} color={"#fff"} />
+						</View>
+
+					)}
 				</View>
 			</View> 
 			<View style={styles.cardReacentQuiz}>
