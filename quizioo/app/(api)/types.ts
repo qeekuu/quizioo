@@ -1,8 +1,38 @@
-export type Question = {
-	question: string;
-	answers: [string, string, string, string];
-	correctIndex: number;
-};
+export type QuestionType = "single" | "multiple" | "open" | "boolean" | "image" | "math";
+
+export type Question = 
+	| {
+		type: "single";
+		question: string;
+		answers: string[];
+		correctIndex: number;
+	  }
+	| {
+		type: "multiple";
+		question: string;
+		answers: string[];
+		correctIndexes: number[];
+	  }
+	| {
+		type: "open";
+		question: string;
+		correctText: string;
+	  }
+	| {
+		type: "boolean";
+		question: string;
+		correctBool: boolean;
+	  }
+	| {
+		type: "image";
+		question: string;
+		imageUri: string;
+	  }
+	| {
+		type: "math";
+		question: string;
+		math: string;
+	  };
 
 export type Quiz = {
 	id: number;
@@ -12,6 +42,11 @@ export type Quiz = {
 	incorrectPoints: number;
 	questions: Question[];
 	createdAt: string;
+};
+
+export type Category = {
+  id: number;
+  label: string;
 };
 
 export type User = {

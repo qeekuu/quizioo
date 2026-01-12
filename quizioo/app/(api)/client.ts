@@ -1,5 +1,5 @@
 import { API_BASE } from "./config";
-import type { Question, Quiz, CreateQuizDTO, UpdateQuizDTO, User, RegisterDTO, LoginDTO } from "./types";
+import type { Question, Quiz, CreateQuizDTO, UpdateQuizDTO, User, RegisterDTO, LoginDTO, Category } from "./types";
 
 async function handle<T>(res: Response): Promise<T> {
   if (!res.ok) {
@@ -13,6 +13,11 @@ export const api = {
 	async listQuizzes(): Promise<Quiz[]> {
 		const res = await fetch(`${API_BASE}/quizzes?_sort=id&_order=desc`);
 		return handle<Quiz[]>(res);
+	},
+
+	async listcategoris(): Promise<Category[]> {
+		const res = await fetch(`${API_BASE}/categories?_sort=id&_order=desc`);
+		return handle<Category[]>(res);
 	},
 
 	async createQuiz(data: CreateQuizDTO) : Promise<Quiz> {
@@ -39,6 +44,7 @@ export const api = {
 		});
 		await handle<unknown>(res);
 	},
+
 
   async findUserByEmail(email: string): Promise<User | null> {
     const res = await fetch(`${API_BASE}/users?email=${encodeURIComponent(email)}`);
