@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Alert, Text, TextInput, View, ScrollView, KeyboardAvoidingView, Platform, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Dropdown } from "react-native-element-dropdown";
@@ -6,6 +6,9 @@ import { styles } from "./QuizAddScreen.styles";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/(navigation)/types";
 import { useNavigation } from "@react-navigation/native";
+import { api } from "@/app/(api)/client";
+
+import type { Category } from "@/app/(api)/types";
 
 type Nav = NativeStackNavigationProp<RootStackParamList, "QuizAdd">;
 
@@ -23,14 +26,10 @@ export default function QuizAddScreen() {
     { label: "Custom", correctAnswer: "", incorrectAnswer: "" },
   ];
 
-  const quizTypeTypes = [
-	{ label: "Math" },
-	{ label: 'Physics' },
-	{ label: 'Language' },
-  ];
-
   const [quizName, setQuizName] = useState("");
   const [quizType, setQuizType] = useState<string | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [catLoading, setCatLoading] = useState(true);
 
   const [pointType, setPointType] = useState<PointTypeItem["label"] | null>(null);
   const [correctPoints, setCorrectPoints] = useState("");
@@ -38,13 +37,41 @@ export default function QuizAddScreen() {
 
   const [numQuestions, setNumQuestions] = useState("");
 
+  useEffect(() => {
+	let mounted = true;
+
+	(async () => {
+		try {
+			setCatLoading(true);
+			const list = await api.listCategories();
+			if(mounted)
+				setCategories(list);
+		} catch(e: any){
+			Alert.alert("Error", e?.message ?? "Cannot load categoriees");
+		} finally {
+			if(mounted)
+				setCatLoading(false);
+		}
+	})();
+
+	return () => {
+		mounted = false;
+	};
+  }, []);
+
   const handleQuizAdd = () => {
 	const nq = parseInt(numQuestions, 10);
 
-	if (!quizName.trim()) return Alert.alert("Validation", "Enter quiz name");
-    if (!quizType) return Alert.alert("Validation", "Select quiz type");
-    if (!pointType) return Alert.alert("Validation", "Select points type");
-    if (!Number.isFinite(nq) || nq <= 0) return Alert.alert("Validation", "Enter correct number of questions (> 0)");
+	if (!quizName.trim()) 
+		return Alert.alert("Validation", "Enter quiz name");
+    if (!quizType) 
+		return Alert.alert("Validation", "Select quiz type");
+    if (!pointType) 
+		return Alert.alert("Validation", "Select points type");
+    if (!Number.isFinite(nq) || nq <= 0) 
+		return Alert.alert("Validation", "Enter correct number of questions (> 0)");
+	if (!catLoading && categories.length === 0)
+		return Alert.alert("Validation", "no categires in database");
 
 	const cp = Number(correctPoints);
     const ip = Number(incorrectPoints);
@@ -82,14 +109,15 @@ export default function QuizAddScreen() {
 				onChangeText={setQuizName}
 			/>
 
-            <Text style={styles.createQuizSectionText}>Type:</Text>
+            <Text style={styles.createQuizSectionText}>Category:</Text>
 			<Dropdown
-			   data={quizTypeTypes}
+			   data={categories}
 			   labelField="label"
 			   valueField="label"
-			   placeholder="Select Type"
+			   placeholder={catLoading ? "Loading..." : "Select category"}
+			   disable={catLoading || categories.length === 0}
 			   value={quizType}
-			   onChange={(item: { label: string }) => setQuizType(item.label)}
+			   onChange={(item: Category) => setQuizType(item.label)}
 
               style={styles.dropdown}
 			  placeholderStyle={styles.dropdownPlaceholder}

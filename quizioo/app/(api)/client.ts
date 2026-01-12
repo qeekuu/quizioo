@@ -15,7 +15,7 @@ export const api = {
 		return handle<Quiz[]>(res);
 	},
 
-	async listcategoris(): Promise<Category[]> {
+	async listCategories(): Promise<Category[]> {
 		const res = await fetch(`${API_BASE}/categories?_sort=id&_order=desc`);
 		return handle<Category[]>(res);
 	},

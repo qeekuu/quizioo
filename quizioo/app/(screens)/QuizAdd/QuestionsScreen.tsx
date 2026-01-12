@@ -335,7 +335,7 @@ console.log("API_BASE =", API_BASE);
 
       {/* 6. BOOLEAN */}
       {item.type === "boolean" && (
-        <View style={{ flexDirection: "row", gap: 12 }}>
+        <View style={{ flexDirection: "column", gap: 12 }}>
           <TouchableOpacity
             style={styles.button}
             onPress={() => setBoolean(index, true)}
