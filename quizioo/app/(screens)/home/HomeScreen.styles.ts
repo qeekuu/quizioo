@@ -54,6 +54,12 @@ export const styles = StyleSheet.create({
 	fontWeight: 'bold',
 	fontSize: 17,
   },
+  
+  greetingIconStyle: {
+	flexDirection: 'row',
+	alignItems: 'center',
+	marginBottom: 8,
+  },
 
   topBarImageBox: {
     width: 44,
