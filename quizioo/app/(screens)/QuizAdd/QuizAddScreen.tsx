@@ -59,7 +59,7 @@ export default function QuizAddScreen() {
 	};
   }, []);
 
-  const handleQuizAdd = () => {
+  const handleQuizAdd = async (): Promise<void> => {
 	const nq = parseInt(numQuestions, 10);
 
 	if (!quizName.trim()) 
@@ -70,20 +70,32 @@ export default function QuizAddScreen() {
 		return Alert.alert("Validation", "Select points type");
     if (!Number.isFinite(nq) || nq <= 0) 
 		return Alert.alert("Validation", "Enter correct number of questions (> 0)");
-	if (!catLoading && categories.length === 0)
-		return Alert.alert("Validation", "no categires in database");
 
 	const cp = Number(correctPoints);
-    const ip = Number(incorrectPoints);
-    if (!Number.isFinite(cp) || !Number.isFinite(ip)) return Alert.alert("Validation", "Points must be numbers");
+	const ip = Number(incorrectPoints);
+
+	if(!Number.isFinite(cp) || !Number.isFinite(ip))
+		return Alert.alert("Validation", "Points must be numbers");
+
+	try {
+		const existing = await api.listQuizzes();
+		const targetName = quizName.trim();
+		const targetType = quizType; // kategorie
+
+		const taken = existing.some(q => q.quizName.trim() === targetName && q.quizType === targetType);
+		if(taken)
+			return Alert.alert("Validation", "Quiz name already exist in this category, choose diffrent one.");
 
 	navigation.navigate("Questions", {
-      quizName: quizName.trim(),
-      quizType,
+      quizName: targetName,
+      quizType: targetType,
       correctPoints: cp,
       incorrectPoints: ip,
       numQuestions: nq,
     });
+	} catch(e: any) {
+		Alert.alert("Error", e?.message ?? "Cannot chceck quiz name");
+	}
 	
   };
 

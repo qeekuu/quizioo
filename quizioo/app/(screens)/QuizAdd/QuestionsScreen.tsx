@@ -7,9 +7,12 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { api } from "@/app/(api)/client";
 import { API_BASE } from "@/app/(api)/config";
 import { Dropdown } from "react-native-element-dropdown";
+import { useNavigation } from "@react-navigation/native";
 
 import type { Question, QuestionType } from "@/app/(api)/types";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
+type Nav = NativeStackNavigationProp<RootStackParamList, "Questions">;
 type Props = NativeStackScreenProps<RootStackParamList, "Questions">;
 
 const QUESTION_TYPES: { label: string; value: QuestionType }[] = [
@@ -25,7 +28,7 @@ export default function QuestionsScreen({ route }: Props) {
 console.log("API_BASE =", API_BASE);
 	
   const { quizName, quizType, correctPoints, incorrectPoints, numQuestions } = route.params;
-
+  
   {/*
   // tablica pytań
   const [questions, setQuestions] = useState<QuestionItem[]>(
@@ -48,6 +51,9 @@ console.log("API_BASE =", API_BASE);
 		correctIndex: 0,
 	  }))
   )
+
+  const navigation = useNavigation<Nav>();
+  const [localQuizName, setLocalQuizName] = useState(quizName);
 
   const pointsLabel = useMemo(
     () => `Correct: ${correctPoints} | Incorrect: ${incorrectPoints}`,
@@ -397,9 +403,9 @@ console.log("API_BASE =", API_BASE);
       <Text style={styles.quizInfText}>Quiz Information</Text>
 
       <View style={styles.createQuizSection}>
-        <Text style={styles.paramText}>Quiz name: {quizName}</Text>
-        <Text style={styles.paramText}>Type: {quizType}</Text>
-        <Text style={styles.paramText}>Points: {pointsLabel}</Text>
+		<Text style={[styles.createQuizSectionText, { fontSize: 15 }]}>Quiz name: {quizName}</Text>
+        <Text style={[styles.createQuizSectionText, { fontSize: 15 }]}>Type: {quizType}</Text>
+        <Text style={[styles.createQuizSectionText, { fontSize: 15 }]}>Points: {pointsLabel}</Text>
       </View>
     </>
   );
