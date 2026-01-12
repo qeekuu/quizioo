@@ -6,6 +6,7 @@ import { RootStackParamList } from "@/app/(navigation)/types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { api } from "@/app/(api)/client";
 import { API_BASE } from "@/app/(api)/config";
+import { Dropdown } from "react-native-element-dropdown";
 
 import type { Question, QuestionType } from "@/app/(api)/types";
 
@@ -43,7 +44,7 @@ console.log("API_BASE =", API_BASE);
 	  Array.from({ length:numQuestions }, () => ({
 		type: "single",
 		question: "",
-		answers: ["", ""],
+		answers: [""],
 		correctIndex: 0,
 	  }))
   )
@@ -113,7 +114,7 @@ console.log("API_BASE =", API_BASE);
 
 		if(q.type !== "single" && q.type !== "multiple")
 			return prev;
-		if(q.answers.length <= 2)
+		if(q.answers.length <= 1)
 			return prev; // minimalnie dwie odpowiedzi
 
 		const newAnswers = q.answers.filter((_, i) => i !== aIndex);
@@ -231,20 +232,24 @@ console.log("API_BASE =", API_BASE);
       </Text>
 
       {/* 2. Wybór typu pytania */}
-      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
-        {QUESTION_TYPES.map(t => (
-          <TouchableOpacity
-            key={t.value}
-            style={[
-              styles.button,
-              { height: 36, opacity: item.type === t.value ? 1 : 0.6 }
-            ]}
-            onPress={() => changeType(index, t.value)}
-          >
-            <Text style={styles.buttonText}>{t.label}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+	  <Text style={styles.createQuizSectionText}>Question type:</Text>
+		<Dropdown
+			data={QUESTION_TYPES}
+			labelField="label"
+			valueField="value"
+			placeholder="Select question type"
+			value={item.type}
+			onChange={(t: { label: string; value: QuestionType }) =>
+			  changeType(index, t.value)
+			}
+			style={styles.dropdown}
+			placeholderStyle={styles.dropdownPlaceholder}
+			selectedTextStyle={styles.dropdownSelectedText}
+			containerStyle={styles.dropdownListContainer}
+			itemTextStyle={styles.dropdownItemText}
+			itemContainerStyle={styles.dropdownItemContainer}
+			activeColor={styles.dropdownActiveColor}
+		/>
 
       {/* 3. Treść pytania */}
       <TextInput
@@ -252,6 +257,7 @@ console.log("API_BASE =", API_BASE);
         value={item.question}
         onChangeText={text => updateQuestionText(index, text)}
         placeholder="Question..."
+		placeholderTextColor={"#FFFFFF"}
       />
 
       {/* 4. SINGLE / MULTIPLE */}
@@ -272,6 +278,7 @@ console.log("API_BASE =", API_BASE);
                     updateAnswerText(index, aIndex, text)
                   }
                   placeholder={`Answer ${aIndex + 1}`}
+				  placeholderTextColor={"#FFFFFF"}
                 />
 
                 {/* single */}
@@ -330,6 +337,7 @@ console.log("API_BASE =", API_BASE);
             })
           }
           placeholder="Correct answer"
+		  placeholderTextColor={"#FFFFFF"}
         />
       )}
 
@@ -360,6 +368,7 @@ console.log("API_BASE =", API_BASE);
             setImage(index, text)
           }
           placeholder="Image URI"
+		  placeholderTextColor={"#FFFFFF"}
         />
       )}
 
@@ -372,6 +381,7 @@ console.log("API_BASE =", API_BASE);
             setMath(index, text)
           }
           placeholder="LaTeX / math"
+		  placeholderTextColor={"#FFFFFF"}
         />
       )}
 
