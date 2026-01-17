@@ -54,20 +54,33 @@ export const styles = StyleSheet.create({
 	fontWeight: 'bold',
 	fontSize: 17,
   },
+  
+  greetingIconStyle: {
+	flexDirection: 'row',
+	alignItems: 'center',
+	marginBottom: 8,
+  },
 
   topBarImageBox: {
-	width: 50,
-	height: 50,
-	borderRadius: 9,
-	backgroundColor: colors.bordercolor,
-	justifyContent: 'center',
-	alignItems: 'center',
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    overflow: "hidden",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.background,
   },
 
   topBarImage: {
-	width: 40,
-	height: 40,
-	borderRadius: 7,
+    width: "100%",
+    height: "100%",
+  },
+
+  topBarAvatarFallback: {
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   cardReacentQuiz: {

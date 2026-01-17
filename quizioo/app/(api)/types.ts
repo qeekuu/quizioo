@@ -55,6 +55,7 @@ export type User = {
   email: string;
   password: string;
   createdAt: string;
+  avatarUri?: string;
 };
 
 export type LoginDTO = {

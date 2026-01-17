@@ -16,6 +16,7 @@ import { useAuth } from "@/app/(context)/AppContext";
 import {blue} from "react-native-reanimated/lib/typescript/Colors";
 
 import type { RouteProp } from "@react-navigation/native";
+import type { ComponentProps } from "react";
 
 type Nav = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 type HomeRoute = RouteProp<TabParamList, "Home">;
@@ -27,27 +28,26 @@ export default function HomeScreen() {
 	const route = useRoute<HomeRoute>();
 	
 	const userName = state.user?.username ?? "Guest";
+	const avatarUri = state.user?.avatarUri;
 
 	const [quizzes, setQuizzes] = useState<Quiz[]>([]);
 	const [loading, setLoading] = useState(true);
 
-	const handleSignIn = () => navigation.navigate("Login"); // tymczasowo do Login
+	type IoniconName = ComponentProps<typeof Ionicons>["name"];
+	const hour = new Date().getHours();
 
-	const DATA = [
-		{	
-			id: '1', title: 'Statistics Math Quiz', subTitle: 'Math • 12 Quizzes'
-		},
-		{	
-			id: '2', title: 'Integes Quiz', subTitle: 'Math • 10 Quizzes'
-		},
-		{	
-			id: '3', title: 'Science Quiz', subTitle: 'Physics • Quizzes'
-		},
-	];
+	let greetingIcon : IoniconName;
+	if (hour >= 6 && hour < 12)
+		greetingIcon = "sunny-outline";
+	else if (hour >= 12 && hour < 18)
+		greetingIcon = "sunny";
+	else if (hour >= 18 && hour < 22)
+		greetingIcon = "partly-sunny";
+	else
+		greetingIcon = "moon";
 
 	useEffect(() => {
     let mounted = true;
-
     const loadQuizzes = async () => {
       try {
         const data = await api.listQuizzes();
@@ -89,9 +89,28 @@ export default function HomeScreen() {
 	 return (
 		 <SafeAreaView style={styles.container}>
 			<View style={styles.topBar}>
-				<Text style={styles.topBarText}>{userName}</Text>
+				<View style={styles.greetingIconStyle}>
+					<Ionicons
+						name={greetingIcon}
+						size={18}
+						color="rgba(255,255,255,0.9)"
+					/>
+					<Text style={styles.topBarText}>Hi, {userName}</Text>
+				</View>
 				<View style={styles.topBarImageBox}>
-					<Image style={styles.topBarImage} source={""} contentFit="contain"/>
+					{avatarUri ? (
+						<Image
+							style={styles.topBarImage}
+							source={{uri: avatarUri}}
+							contentFit="cover"
+							transition={150}
+						/>
+					) : (
+						<View style={styles.topBarAvatarFallback}>
+							<Ionicons name="person-circle-outline" size={28} color={"#fff"} />
+						</View>
+
+					)}
 				</View>
 			</View> 
 			<View style={styles.cardReacentQuiz}>
