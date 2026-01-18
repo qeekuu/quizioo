@@ -8,6 +8,7 @@ type Props = {
 };
 
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const dayStreak = (n: number) => (n === 1 ? "Day" : "Days");
 
 export default function WeeklyStreak({
   week,
@@ -56,11 +57,11 @@ export default function WeeklyStreak({
 
       {/* statystyki */}
       <View style={{ marginTop: 12 }}>
-        <Text style={{ color: "#fff", fontSize: 14 }}>
-          🔥 {currentStreak} dni z rzędu
+        <Text style={{ color: "#FFFFFF", fontSize: 16, fontWeight: 'bold' }}>
+          {dayStreak(currentStreak)} in a row: {currentStreak}
         </Text>
-        <Text style={{ color: "#aaa", fontSize: 13, marginTop: 2 }}>
-          🏆 rekord: {bestStreak}
+        <Text style={{ color: "#FFFFFF", fontSize: 16, fontWeight: 'bold', marginTop: 5 }}>
+          Best streak: {bestStreak}
         </Text>
       </View>
     </View>
