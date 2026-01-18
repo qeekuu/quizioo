@@ -99,7 +99,7 @@ export default function HomeScreen() {
 				<View style={styles.topBarImageBox}>
 					<Avatar 
 						avatarUri={state.user?.avatarUri}
-						size={28}
+						size={50}
 					/>
 
 				</View>
