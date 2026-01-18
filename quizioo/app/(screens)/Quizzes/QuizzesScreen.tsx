@@ -64,7 +64,7 @@ export default function QuizzesScreen()
     const Item = ({ quiz }: ItemProps) => (
         <TouchableOpacity style={styles.containerItem}>
             <View style={styles.leftIcon}>
-                <Ionicons name="book-sharp" size={32} color="rgba(100, 200, 255, 0.8" />
+                <Ionicons name="book-sharp" size={32} color="rgba(100, 200, 255, 0.8)" />
             </View>
 
             <View style={styles.centerText}>

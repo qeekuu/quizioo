@@ -210,4 +210,4 @@ export const styles = StyleSheet.create({
         fontSize: 14,
         opacity: 0.8,
     },
-}
+});
