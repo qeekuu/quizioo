@@ -50,7 +50,7 @@ export default function HomeScreen() {
     let mounted = true;
     const loadQuizzes = async () => {
       try {
-        const data = await api.listQuizzes();
+        const data = await api.listQuizzesHome();
         if (mounted) setQuizzes(data);
       } catch (e) {
         Alert.alert("Error", "Cannot load quizzes");

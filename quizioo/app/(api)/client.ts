@@ -43,7 +43,11 @@ console.log("X-Total-Count:", res.headers.get("X-Total-Count"));
 		return { data: json.data, total: json.items, next: json.next, last: json.last };
 	},
 	
-	
+	async listQuizzesHome(): Promise<Quiz[]> {
+		const res = await fetch(`${API_BASE}/quizzes?_sort=id&_order=desc&_limit=3`);
+		return handle<Quiz[]>(res);
+	},
+
 	async listCategories(): Promise<Category[]> {
 		const res = await fetch(`${API_BASE}/categories?_sort=id&_order=desc`);
 		return handle<Category[]>(res);
