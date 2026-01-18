@@ -4,6 +4,7 @@
     "@types/react": "~19.1.10",
     "@types/react-native": "^0.72.8",
     "expo-camera": "~17.0.10",
+    "expo-image-picker": "~17.0.10",
     "expo-media-library": "~18.2.1",
     "expo-secure-store": "^15.0.8",
     "typescript": "~5.9.2"

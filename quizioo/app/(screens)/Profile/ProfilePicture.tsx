@@ -4,7 +4,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { styles, colors } from "../Profile/ProfileScreen.styles";
 import { useAuth } from "@/app/(context)/AppContext";
-import {Avatar} from "../components/Avatar";
+import { Avatar } from "../components/Avatar";
+import * as ImagePicker from "expo-image-picker";
 
 const DEFAULT_AVATARS = [
   { id: "default", icon: "person-circle-outline", label: "Default" },
@@ -25,6 +26,40 @@ export default function ProfilePicture() {
     } catch (e) {
       console.log("Avatar update error:", e);
     }
+  };
+
+  const onPickCustom = async () => {
+	try {
+	  const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
+	  if (!perm.granted) {
+		console.log("Gallery permission denied");
+		return;
+	  }
+
+	  const result = await ImagePicker.launchImageLibraryAsync({
+		mediaTypes: ImagePicker.MediaTypeOptions.Images,
+		allowsEditing: true,
+		aspect: [1, 1],
+		quality: 0.6,
+		base64: true,
+	  });
+
+	  if(result.canceled)
+		  return;
+		
+	  const asset = result.assets?.[0];
+	  if(!asset?.base64) {
+		console.log("no base64 returned");
+		return;
+	  }
+	  const base64Avatar = `data:image/jpeg;base64,${asset.base64}`;
+
+	  await setAvatar(base64Avatar);
+		
+	} catch (e) {
+		console.log("Pick custom avatar error", e);
+	}
+
   };
 
   return (
@@ -64,7 +99,7 @@ export default function ProfilePicture() {
 
           <TouchableOpacity
             style={styles.avatarTile}
-            onPress={() => console.log("Pick custom avatar")}
+            onPress={onPickCustom}
           >
             <Ionicons name="image-outline" size={36} color="#fff" />
             <Text style={styles.avatarLabel}>Custom</Text>

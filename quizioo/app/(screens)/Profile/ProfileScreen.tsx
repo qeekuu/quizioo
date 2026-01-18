@@ -33,7 +33,7 @@ export default function ProfileScreen()
 				>
 					<Avatar 
 						avatarUri={state.user?.avatarUri}
-						size={96}
+						size={138}
 					/>
 				{ /*				<Link screen="ProfilePicture" params={{id: 'profpic'}} style={styles.textLink}>Click to change</Link> */}
 				</TouchableOpacity>
