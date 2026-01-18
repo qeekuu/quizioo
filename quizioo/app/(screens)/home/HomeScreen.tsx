@@ -12,6 +12,7 @@ import { api } from "@/app/(api)/client";
 import type { Quiz } from "@/app/(api)/types";
 import { TabParamList } from "@/app/(navigation)/types";
 import { useAuth } from "@/app/(context)/AppContext";
+import { Avatar } from "../components/Avatar";
 
 import {blue} from "react-native-reanimated/lib/typescript/Colors";
 
@@ -28,7 +29,6 @@ export default function HomeScreen() {
 	const route = useRoute<HomeRoute>();
 	
 	const userName = state.user?.username ?? "Guest";
-	const avatarUri = state.user?.avatarUri;
 
 	const [quizzes, setQuizzes] = useState<Quiz[]>([]);
 	const [loading, setLoading] = useState(true);
@@ -85,7 +85,6 @@ export default function HomeScreen() {
 	</TouchableOpacity>
 	);
 
-
 	 return (
 		 <SafeAreaView style={styles.container}>
 			<View style={styles.topBar}>
@@ -98,19 +97,11 @@ export default function HomeScreen() {
 					<Text style={styles.topBarText}>Hi, {userName}</Text>
 				</View>
 				<View style={styles.topBarImageBox}>
-					{avatarUri ? (
-						<Image
-							style={styles.topBarImage}
-							source={{uri: avatarUri}}
-							contentFit="cover"
-							transition={150}
-						/>
-					) : (
-						<View style={styles.topBarAvatarFallback}>
-							<Ionicons name="person-circle-outline" size={28} color={"#fff"} />
-						</View>
+					<Avatar 
+						avatarUri={state.user?.avatarUri}
+						size={28}
+					/>
 
-					)}
 				</View>
 			</View> 
 			<View style={styles.cardReacentQuiz}>

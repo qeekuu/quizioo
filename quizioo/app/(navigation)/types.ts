@@ -15,6 +15,7 @@ export type RootStackParamList = {
 		incorrectPoints: number;
 		numQuestions: number;
 	};
+	ProfilePicture: undefined;
 };
 
 export type TabParamList = {

@@ -1,17 +1,12 @@
 {
   "users": [
     {
-      "id": "4ad4aa65267d5c",
-      "email": "test@email.com",
-      "password": "Test",
-      "createdAt": "2025-12-15T08:02:34.617Z"
-    },
-    {
       "id": "c38d730194cad8",
       "username": "admin",
       "email": "admin@test.com",
       "password": "admin",
-      "createdAt": "2026-01-08T20:37:58.244Z"
+      "createdAt": "2026-01-08T20:37:58.244Z",
+      "avatarUri": "icon:glasses-outline"
     }
   ],
   "quizzes": [

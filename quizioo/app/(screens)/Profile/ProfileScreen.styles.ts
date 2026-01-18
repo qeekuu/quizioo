@@ -18,6 +18,7 @@ export const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: colors.background,
+		padding: 10,
 	},
 
 	text: {
@@ -129,5 +130,37 @@ export const styles = StyleSheet.create({
 		borderWidth: 5,
 		borderColor: colors.bordercolor,
 	},
+	
+	avatarCard: {
+		alignItems: 'center',
+		padding: 12,
+		margin: 10,
+		borderRadius: 16,
+		borderWidth: 5,
+		borderColor: colors.bordercolor,
+	},
 
+	avatarCardInside: {
+		flexDirection: "row",
+		flexWrap: 'wrap',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+
+	avatarTile: {
+		width: 80,
+		height: 80,
+		margin: 10,
+		borderRadius: 16,
+		backgroundColor: colors.surface,
+		justifyContent: "center",
+		alignItems: "center",
+		borderWidth: 2,
+		borderColor: colors.stroke,
+	},
+	avatarLabel: {
+		marginTop: 4,
+		color: colors.text,
+		fontSize: 12,
+	},
 });

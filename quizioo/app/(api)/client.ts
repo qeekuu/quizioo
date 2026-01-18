@@ -1,5 +1,5 @@
 import { API_BASE } from "./config";
-import type { Question, Quiz, CreateQuizDTO, UpdateQuizDTO, User, RegisterDTO, LoginDTO, Category } from "./types";
+import type { Question, Quiz, CreateQuizDTO, UpdateQuizDTO, User, RegisterDTO, LoginDTO, Category, UpdateUserDTO } from "./types";
 
 async function handle<T>(res: Response): Promise<T> {
   if (!res.ok) {
@@ -86,6 +86,15 @@ export const api = {
     const user = list[0];
     if (!user) throw new Error("Invalid email or password");
     return user;
+  },
+
+  async updateUser(id:string, data: UpdateUserDTO): Promise<User> {
+	const res = await fetch(`${API_BASE}/users/${encodeURIComponent(id)}`, {
+		method: "PATCH",
+		headers: { "Content-Type": "application/json"},
+		body: JSON.stringify(data),
+	});
+	return handle<User>(res);
   },
 	
 };

@@ -13,6 +13,7 @@ type AuthContextType = {
   login: (dto: LoginDTO) => Promise<User>;
   register: (dto: RegisterDTO) => Promise<User>;
   logout: () => Promise<void>;
+  setAvatar: (avatarUri: string) => Promise<User>;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -80,9 +81,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 		setUser(null);
 	}, []);
 
+	const setAvatar = useCallback(async (avatarUri: string) => {
+		if(!user)
+			throw new Error("Not logged int");
+
+		const updated = await api.updateUser(user.id, { avatarUri });
+		await SecureStore.setItemAsync(USER_KEY, JSON.stringify(updated));
+
+		setUser(updated);
+
+		return updated;
+	}, [user]);
+
 	const value = useMemo(
-		() => ({ state: { user, isReady }, login, register, logout }),
-		[user, isReady, login, register, logout]
+		() => ({ state: { user, isReady }, login, register, logout, setAvatar }),
+		[user, isReady, login, register, logout, setAvatar]
 	);
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

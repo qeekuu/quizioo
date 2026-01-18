@@ -69,3 +69,5 @@ export type UpdateQuizDTO = Partial<CreateQuizDTO>;
 export type CreateUserDTO = Omit<User, "id">;
 export type RegisterDTO = CreateUserDTO;
 export type UserPublic = Omit<User, "password">;
+export type UpdateUserDTO = Partial<Pick<User, "avatarUri" | "username">>;
+
