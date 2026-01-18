@@ -10,6 +10,10 @@ import {Avatar} from "../components/Avatar";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/(navigation)/types";
+import { loadStreak, buildWeekArrayFromVisited } from "@/app/(utils)/streak";
+import { useState, useEffect, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { StreakState } from "@/app/(utils)/streak";
 
 type Nav = NativeStackNavigationProp<RootStackParamList, "ProfilePicture">;
 
@@ -20,6 +24,31 @@ export default function ProfileScreen()
 
 	const userName = state.user?.username ?? "Guest";
 
+	const [streak, setStreak] = useState<StreakState>({ visitedDays: [], currentStreak: 0, bestStreak: 0 });
+	{/* 
+	useEffect(() => {
+		if(!state.user?.id)
+			return;
+		loadStreak(state.user.id).then(setStreak);
+	}, [state.user?.id]);
+	*/}
+   useFocusEffect(
+	   useCallback(() => {
+			let alive = true;
+			const userId = state.user?.id;
+			if(!userId)
+				return;
+
+			loadStreak(userId).then((s) => {
+				if(alive)
+					setStreak(s);
+			});
+
+			return () => {
+				alive = false;
+			};
+	   }, [state.user?.id])
+   );
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.topBar}>
@@ -40,15 +69,14 @@ export default function ProfileScreen()
 			</View>
 			<View style={styles.achievements}>
 				<Text style={styles.achievementsText}>Achievements</Text>
-				<Link screen="QuizAdd" params={{ id: 'quizadd' }}style={styles.textLink}>See all</Link>
 			</View>
 			<View style={styles.achievementsCard}>
 				<Text style={styles.dailyStreekText}>Daily Streek</Text>
 				<View style={styles.staticticsCard}>
 					<WeeklyStreak
-						week={[true, true, true, false, true, true, true]}
-						currentStreak={5}
-						bestStreak={18}
+						week={buildWeekArrayFromVisited(streak.visitedDays)}
+						currentStreak={streak.currentStreak}
+						bestStreak={streak.bestStreak}
 					/>
 				</View>
 			</View>

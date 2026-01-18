@@ -2,6 +2,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
 import * as SecureStore from "expo-secure-store";
 import { api } from "@/app/(api)/client";
 import type { User, LoginDTO, RegisterDTO } from "@/app/(api)/types";
+import { registerVisit } from "../(utils)/streak";
 
 type AuthState = {
   user: User | null;
@@ -35,6 +36,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
     boot();
   }, []);
+
+  useEffect(() => {
+	if (!user) 
+		return;
+	registerVisit(user.id).catch(console.log);
+  }, [user?.id]);
 
   {/*
   const login = async (dto: LoginDTO) => {
