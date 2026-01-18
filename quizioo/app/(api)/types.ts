@@ -44,6 +44,16 @@ export type Quiz = {
 	createdAt: string;
 };
 
+export type PageResponse<T> = {
+  data: T[];
+  first: number;
+  items: number;      
+  last: number; 
+  next: number | null;
+  pages: number;
+  prev: number | null;
+};
+
 export type Category = {
   id: number;
   label: string;

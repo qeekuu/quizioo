@@ -1,5 +1,5 @@
 import { API_BASE } from "./config";
-import type { Question, Quiz, CreateQuizDTO, UpdateQuizDTO, User, RegisterDTO, LoginDTO, Category, UpdateUserDTO } from "./types";
+import type { Question, Quiz, CreateQuizDTO, UpdateQuizDTO, User, RegisterDTO, LoginDTO, Category, UpdateUserDTO, PageResponse } from "./types";
 
 async function handle<T>(res: Response): Promise<T> {
   if (!res.ok) {
@@ -10,11 +10,40 @@ async function handle<T>(res: Response): Promise<T> {
 }
 
 export const api = {
-	async listQuizzes(): Promise<Quiz[]> {
-		const res = await fetch(`${API_BASE}/quizzes?_sort=id&_order=desc`);
-		return handle<Quiz[]>(res);
-	},
+	async listQuizzes(params: {
+		page?: number;
+		perPage?: number;
+		q?: string;
+		quizType?: string | null;
+		signal?: AbortSignal;
+	}): Promise<{ data: Quiz[]; total: number, next: number | null, last: number }> {
+		const { page = 1, perPage = 3, q = "", quizType = null, signal, } = params;
 
+		const qs = new URLSearchParams();
+		qs.set("_sort", "id");
+		qs.set("_order", "desc");
+		qs.set("_page", String(page));
+		qs.set("_per_page", String(perPage));
+
+		const trimmedQ = q.trim();
+		if (trimmedQ.length > 0) qs.set("q", trimmedQ);
+
+		// filtr po polu quizType
+		if (quizType) qs.set("quizType", quizType);
+
+		const res = await fetch(`${API_BASE}/quizzes?${qs.toString()}`, { signal });
+console.log("X-Total-Count:", res.headers.get("X-Total-Count"));
+
+		if (!res.ok) {
+			const body = await res.text().catch(() => "");
+			throw new Error(`HTTP ${res.status}: ${body || res.statusText}`);
+		}
+
+		const json = (await res.json()) as PageResponse<Quiz>;
+		return { data: json.data, total: json.items, next: json.next, last: json.last };
+	},
+	
+	
 	async listCategories(): Promise<Category[]> {
 		const res = await fetch(`${API_BASE}/categories?_sort=id&_order=desc`);
 		return handle<Category[]>(res);
