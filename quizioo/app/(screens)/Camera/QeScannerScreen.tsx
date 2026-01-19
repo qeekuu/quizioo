@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { CameraView, useCameraPermissions, BarcodeScanningResult } from "expo-camera";
 import { useNavigation } from "@react-navigation/native";
@@ -13,6 +13,7 @@ export default function QrScannerScreen() {
   const [scanned, setScanned] = useState(false);
   const [lastValue, setLastValue] = useState<string | null>(null);
   const navigation = useNavigation<Nav>();
+
   if (!permission) return <View />;
 
   if (!permission.granted) {
