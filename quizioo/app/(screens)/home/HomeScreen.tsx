@@ -148,7 +148,7 @@ export default function HomeScreen() {
 			</View>
 			<View style={styles.liveQuiz}>
 				<Text style={styles.liveQuizText}>Live Quizzes</Text>
-				<Link screen="QuizDetails" params={{ id: 'quizadd' }}style={styles.textLink}>See all</Link>
+				<Link screen="Quizzes" params={{ id: 'quizzes' }}style={styles.textLink}>See all</Link>
 			</View>
 
 			<FlatList
