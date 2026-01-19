@@ -20,71 +20,55 @@ export default function QuizzesScreen()
     const QUIZZES_PER_PAGE = 3;
 
     const [quizCategory, setQuizCategory] = useState<string | null>(null);
-    const [quizzes, setQuizzes] = useState<Quiz[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
-    const [quizLoading, setQuizLoading] = useState(true);
     const [catLoading, setCatLoading] = useState(true);
     // const [search, setSearch] = useState("");
     const [loading, setLoading] = useState<boolean>(false);
     const [page, setPage] = useState<number>(1);
-    const [hasMore, setHasMore] = useState<boolean>(true);
 	const [allQuizzes, setAllQuizzes] = useState<Quiz[]>([]);
 	const [search, setSearch] = useState("");
 
-    const abortRef = useRef<AbortController | null>(null);
-    const requestIdRef = useRef(0);
-
-    useEffect(() => {
-        let mounted = true;
-        (async () => {
-            try {
-                setCatLoading(true);
-                const cats = await api.listCategories();
-                if(!mounted)
-                    return;
-                setCategories(cats);
-            } catch (e: any) {
-                if(!mounted)
-                    return;
-                Alert.alert("Error", e?.message ?? "Cannot load data");
-            } finally {
-                if(mounted) {
-                    setCatLoading(false);
-                }
-            }
-        })();
-
-        load(1);
-
-        return () => {
-            mounted = false;
-            abortRef.current?.abort();
-        };
-    }, []);
-
 	useFocusEffect(
 		useCallback(() => {
-			load(1);
-		}, [quizCategory, search])
+			let active = true;
+
+			(async () => {
+			try {
+				const data = await api.listQuizzesExisting();
+				if (active) setAllQuizzes(data);
+			} catch (e: any) {
+				Alert.alert("Error", e?.message ?? "Cannot load quizzes");
+			}
+		})();
+
+		return () => {
+			active = false;
+		};
+	  }, [])
 	);
-useFocusEffect(
-  useCallback(() => {
-    let active = true;
 
-    (async () => {
-      try {
-        const data = await api.listQuizzesExisting();
-        if (active) setAllQuizzes(data);
-      } catch (e: any) {
-        Alert.alert("Error", e?.message ?? "Cannot load quizzes");
-      }
-    })();
+	useEffect(() => {
+		setPage(1);
+	}, [search, quizCategory]);
+	useEffect(() => {
+		let active = true;
 
-    return () => {
-      active = false;
-    };
-  }, [])
-);
+		(async () => {
+		try {
+			setCatLoading(true);
+			const data = await api.listCategories();
+			if (active) setCategories(data);
+		} catch (e: any) {
+			Alert.alert("Error", e?.message ?? "Cannot load categories");
+		} finally {
+			if (active) setCatLoading(false);
+		}
+	})();
+
+	return () => {
+		active = false;
+	};
+  }, []);
 
     type ItemProps = {quiz: Quiz};
 
@@ -116,61 +100,30 @@ useFocusEffect(
 		return matchesCategory && matchesSearch;
 	});
 	*/}
-const filteredQuizzes = allQuizzes.filter((q) => {
-  const matchesCategory = !quizCategory || q.quizType === quizCategory;
+	const filteredQuizzes = allQuizzes.filter((q) => {
+		const matchesCategory = !quizCategory || q.quizType === quizCategory;
 
-  const matchesSearch =
-    search.trim().length === 0 ||
-    q.quizName.toLowerCase().includes(search.trim().toLowerCase());
+		const matchesSearch = search.trim().length === 0 || q.quizName.toLowerCase().includes(search.trim().toLowerCase());
 
-  return matchesCategory && matchesSearch;
-});
+		return matchesCategory && matchesSearch;
+	});
+	const total = filteredQuizzes.length;
+	const lastPage = Math.max(1, Math.ceil(total / QUIZZES_PER_PAGE));
+	const safePage = Math.min(page, lastPage);
 
-    async function load(pageToLoad = 1) {
-        abortRef.current?.abort();
-        const controller = new AbortController();
-        abortRef.current = controller;
+	const pagedQuizzes = filteredQuizzes.slice(
+		(safePage - 1) * QUIZZES_PER_PAGE,
+		safePage * QUIZZES_PER_PAGE
+	);
 
-        const myRequestid = ++requestIdRef.current;
 
-        setLoading(true);
-        try {
-            const { data, total, next } = await api.listQuizzes({
-                page: pageToLoad,
-                perPage: QUIZZES_PER_PAGE,
-                q: search,
-                quizType: quizCategory,
-                signal: controller.signal,
-            });
+	function onPrevPage() {
+		if (safePage > 1) setPage((p) => p - 1);
+	}
 
-            if(myRequestid !== requestIdRef.current)
-                return; // jeśli nowy pojawił się w międzyczasie to inoruj ten wynik
-            // console.log("Return form API:", { data, total });
-            console.log("PAGE DEBUG:", { pageToLoad, got: data.length, total, next, });
-
-            setQuizzes(data);
-            setPage(pageToLoad);
-            setHasMore(next !== null);
-
-        } catch (e) {
-            if((e as any)?.name === "AbortError")
-                return;
-            Alert.alert("Error", (e as Error).message);
-        } finally {
-            if(myRequestid === requestIdRef.current)
-                setLoading(false);
-        }
-    };
-
-    async function onNextPage() {
-        if (!hasMore || loading) return;
-        await load(page + 1);
-    };
-
-    async function onPrevPage() {
-        if (page <= 1 || loading) return;
-        await load(page - 1);
-    };
+	function onNextPage() {
+		if (safePage < lastPage) setPage((p) => p + 1);
+	}
 
     return (
         <SafeAreaView style={styles.container}>
@@ -218,7 +171,7 @@ const filteredQuizzes = allQuizzes.filter((q) => {
 
             <View style={{ flex: 1 }}>
                 <FlatList
-                    data={filteredQuizzes}
+                    data={pagedQuizzes}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) => <Item quiz={item} />}
                     ListEmptyComponent={
@@ -230,23 +183,24 @@ const filteredQuizzes = allQuizzes.filter((q) => {
                     }
                 />
                 <View style={styles.paginationRow}>
-                    <TouchableOpacity
-                        style={[styles.pagBtn, (page <= 1 || loading) && styles.pagBtnDisabled,]}
-                        onPress={onPrevPage}
-                        disabled={page <= 1 || loading}
-                    >
-                        <Text style={[styles.pagBtnText, (page <= 1 || loading) && styles.pagBtnTextDisabled,]}>Prev</Text>
-                    </TouchableOpacity>
+					<TouchableOpacity
+						disabled={safePage <= 1}
+						onPress={onPrevPage}
+						style={[styles.pagBtn, safePage <= 1 && styles.pagBtnDisabled]}
+					>
+						<Text style={styles.pagBtnText}>Prev</Text>
+					</TouchableOpacity>
 
                     <Text style={styles.pageInfo}>Strona {page}</Text>
 
-                    <TouchableOpacity
-                        style={[styles.pagBtn, (!hasMore || loading) && styles.pagBtnDisabled,]}
-                        onPress={onNextPage}
-                        disabled={!hasMore || loading}
-                    >
-                        <Text style={[styles.pagBtnText, (!hasMore || loading) && styles.pagBtnTextDisabled,]}>Next</Text>
-                    </TouchableOpacity>
+					<TouchableOpacity
+						disabled={safePage >= lastPage}
+						onPress={onNextPage}
+						style={[styles.pagBtn, safePage >= lastPage && styles.pagBtnDisabled]}
+						>
+						<Text style={styles.pagBtnText}>Next</Text>
+					</TouchableOpacity>
+
                 </View>
 
             </View>

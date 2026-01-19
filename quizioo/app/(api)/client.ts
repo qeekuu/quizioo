@@ -10,41 +10,9 @@ async function handle<T>(res: Response): Promise<T> {
 }
 
 export const api = {
-	async listQuizzes(params: {
-		page?: number;
-		perPage?: number;
-		q?: string;
-		quizType?: string | null;
-		signal?: AbortSignal;
-	}): Promise<{ data: Quiz[]; total: number, next: number | null, last: number }> {
-		const { page = 1, perPage = 3, q = "", quizType = null, signal, } = params;
-		const qs = new URLSearchParams();
-		qs.set("_sort", "id");
-		qs.set("_order", "desc");
-		qs.set("_page", String(page));
-		qs.set("_per_page", String(perPage));
-
-		const trimmedQ = q.trim();
-		if (trimmedQ.length > 0) qs.set("quizName_like", trimmedQ);
-
-		// filtr po polu quizType
-		if (quizType) qs.set("quizType", quizType);
-
-		const res = await fetch(`${API_BASE}/quizzes?${qs.toString()}`, { signal });
-console.log("X-Total-Count:", res.headers.get("X-Total-Count"));
-
-		if (!res.ok) {
-			const body = await res.text().catch(() => "");
-			throw new Error(`HTTP ${res.status}: ${body || res.statusText}`);
-		}
-
-		const json = (await res.json()) as PageResponse<Quiz>;
-		return { data: json.data, total: json.items, next: json.next, last: json.last };
-	},
-	
 	async listQuizzesHome(): Promise<Quiz[]> {
-		const { data } = await this.listQuizzes({ page: 1, perPage: 3});
-		return data;
+		const res = await fetch(`${API_BASE}/quizzes?_sort=id&_order=desc&_limit=3`);
+		return handle<Quiz[]>(res);
 	},
 
 	async listQuizzesExisting(): Promise<Quiz[]> {
