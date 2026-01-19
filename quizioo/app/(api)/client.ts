@@ -18,7 +18,6 @@ export const api = {
 		signal?: AbortSignal;
 	}): Promise<{ data: Quiz[]; total: number, next: number | null, last: number }> {
 		const { page = 1, perPage = 3, q = "", quizType = null, signal, } = params;
-
 		const qs = new URLSearchParams();
 		qs.set("_sort", "id");
 		qs.set("_order", "desc");
@@ -26,7 +25,7 @@ export const api = {
 		qs.set("_per_page", String(perPage));
 
 		const trimmedQ = q.trim();
-		if (trimmedQ.length > 0) qs.set("q", trimmedQ);
+		if (trimmedQ.length > 0) qs.set("quizName_like", trimmedQ);
 
 		// filtr po polu quizType
 		if (quizType) qs.set("quizType", quizType);

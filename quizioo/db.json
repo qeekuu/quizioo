@@ -127,6 +127,35 @@
         }
       ],
       "createdAt": "2026-01-19T08:30:55.724Z"
+    },
+    {
+      "id": "6acb",
+      "quizName": "Logic Gates",
+      "quizType": "Logic & Reasoning",
+      "correctPoints": 1,
+      "incorrectPoints": -1,
+      "questions": [
+        {
+          "type": "single",
+          "question": "Bramka NOT realizuje operacje",
+          "answers": [
+            "Koninkcji ",
+            "Negacji"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "type": "single",
+          "question": "Bramka AND realizuje ooeracje",
+          "answers": [
+            "Negacji",
+            "Konnkcji",
+            "Alternatywu"
+          ],
+          "correctIndex": 1
+        }
+      ],
+      "createdAt": "2026-01-19T08:54:07.150Z"
     }
   ],
   "categories": [

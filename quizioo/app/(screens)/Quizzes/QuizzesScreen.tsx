@@ -24,10 +24,12 @@ export default function QuizzesScreen()
     const [categories, setCategories] = useState<Category[]>([]);
     const [quizLoading, setQuizLoading] = useState(true);
     const [catLoading, setCatLoading] = useState(true);
-    const [search, setSearch] = useState("");
+    // const [search, setSearch] = useState("");
     const [loading, setLoading] = useState<boolean>(false);
     const [page, setPage] = useState<number>(1);
     const [hasMore, setHasMore] = useState<boolean>(true);
+	const [allQuizzes, setAllQuizzes] = useState<Quiz[]>([]);
+	const [search, setSearch] = useState("");
 
     const abortRef = useRef<AbortController | null>(null);
     const requestIdRef = useRef(0);
@@ -37,7 +39,6 @@ export default function QuizzesScreen()
         (async () => {
             try {
                 setCatLoading(true);
-
                 const cats = await api.listCategories();
                 if(!mounted)
                     return;
@@ -66,6 +67,24 @@ export default function QuizzesScreen()
 			load(1);
 		}, [quizCategory, search])
 	);
+useFocusEffect(
+  useCallback(() => {
+    let active = true;
+
+    (async () => {
+      try {
+        const data = await api.listQuizzesExisting();
+        if (active) setAllQuizzes(data);
+      } catch (e: any) {
+        Alert.alert("Error", e?.message ?? "Cannot load quizzes");
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, [])
+);
 
     type ItemProps = {quiz: Quiz};
 
@@ -97,6 +116,15 @@ export default function QuizzesScreen()
 		return matchesCategory && matchesSearch;
 	});
 	*/}
+const filteredQuizzes = allQuizzes.filter((q) => {
+  const matchesCategory = !quizCategory || q.quizType === quizCategory;
+
+  const matchesSearch =
+    search.trim().length === 0 ||
+    q.quizName.toLowerCase().includes(search.trim().toLowerCase());
+
+  return matchesCategory && matchesSearch;
+});
 
     async function load(pageToLoad = 1) {
         abortRef.current?.abort();
@@ -190,7 +218,7 @@ export default function QuizzesScreen()
 
             <View style={{ flex: 1 }}>
                 <FlatList
-                    data={quizzes}
+                    data={filteredQuizzes}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) => <Item quiz={item} />}
                     ListEmptyComponent={
