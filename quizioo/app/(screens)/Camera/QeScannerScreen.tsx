@@ -47,17 +47,16 @@ export default function QrScannerScreen() {
         { text: "Open", onPress: () => navigation.replace("QuizDetails", { id: created.id }) },
         { text: "OK", onPress: () => navigation.goBack() },
       ]);
+		return;
 	} catch (e: any) {
-		Alert.alert("Import failed", e?.message ?? "Cannot import");
-		setScanned(false);
+		Alert.alert("Import failed", e?.message ?? "Cannot import", [
+        { text: "Scan again", onPress: () => setScanned(false) },
+        { text: "OK" },
+		]);
+		return;
 	}
-
-    Alert.alert("Scanned", result.data, [
-      { text: "Keep scanning", onPress: () => setScanned(false) },
-      { text: "OK" },
-    ]);
   };
-  
+
   return (
     <View style={styles.container}>
       <CameraView
