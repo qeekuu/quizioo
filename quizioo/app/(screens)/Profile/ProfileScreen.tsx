@@ -1,9 +1,8 @@
-import { Rect } from "react-native-safe-area-context";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { styles, colors } from "../Profile/ProfileScreen.styles";
 import {Ionicons} from "@expo/vector-icons";
-import { Link } from "@react-navigation/native";
 import { useAuth } from "@/app/(context)/AppContext";
 import WeeklyStreak from "../components/WeeklyStreak";
 import {Avatar} from "../components/Avatar";
@@ -11,7 +10,6 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "@/app/(navigation)/types";
 import { loadStreak, buildWeekArrayFromVisited } from "@/app/(utils)/streak";
-import { useState, useEffect, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { StreakState } from "@/app/(utils)/streak";
 

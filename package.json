@@ -8,5 +8,11 @@
     "expo-media-library": "~18.2.1",
     "expo-secure-store": "^15.0.8",
     "typescript": "~5.9.2"
+  },
+  "devDependencies": {
+    "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react-native": "^13.3.3",
+    "jest": "^30.2.0",
+    "react-test-renderer": "^19.2.3"
   }
 }
