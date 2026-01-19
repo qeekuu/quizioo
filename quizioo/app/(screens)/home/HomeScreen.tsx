@@ -15,8 +15,7 @@ import { useAuth } from "@/app/(context)/AppContext";
 import { Avatar } from "../components/Avatar";
 import { useFocusEffect } from "@react-navigation/native";
 import { loadRecentQuiz } from "@/app/(utils)/recentQuiz";
-
-import {blue} from "react-native-reanimated/lib/typescript/Colors";
+import { useNetwork } from "@/app/(context)/NetworkContext";
 
 import type { RouteProp } from "@react-navigation/native";
 import type { ComponentProps } from "react";
@@ -29,6 +28,8 @@ export default function HomeScreen() {
 	const { state } = useAuth();
 	const navigation = useNavigation<Nav>();
 	const route = useRoute<HomeRoute>();
+
+	const { isOnline } = useNetwork();
 	
 	const userName = state.user?.username ?? "Guest";
 
@@ -104,6 +105,13 @@ export default function HomeScreen() {
 		useCallback(() => {
 			let cancelled = false;
 
+			if(!isOnline){
+				setLoading(false);
+				return () => {
+					cancelled = true
+				};
+			}
+
 			(async () => {
 				try {	
 					setLoading(true);
@@ -124,9 +132,9 @@ export default function HomeScreen() {
 		})();
 
 			return () => {
-				cancelled = false;
+				cancelled = true;
 			};
-		}, [])
+		}, [isOnline])
 	);
  
 
@@ -170,7 +178,14 @@ export default function HomeScreen() {
 					/>
 
 				</View>
-			</View> 
+			</View>
+				{!isOnline && (
+				   <View style={{ marginHorizontal: 10, marginBottom: 10, borderRadius: 12, paddingVertical: 8, paddingHorizontal: 12, backgroundColor: "#ef4444" }}>
+					  <Text style={{ color: "white", textAlign: "center", fontWeight: "700" }}>
+						Offline mode – no internet connection
+					  </Text>
+				  </View>
+				)}
 			<View style={styles.cardReacentQuiz}>
 				<View>
 					<Text style={styles.textMuted}>Reacent Quiz</Text>
