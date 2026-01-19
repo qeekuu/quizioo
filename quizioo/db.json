@@ -98,6 +98,35 @@
         }
       ],
       "createdAt": "2026-01-19T08:23:13.136Z"
+    },
+    {
+      "id": "d90d",
+      "quizName": "Państwa",
+      "quizType": "Geography",
+      "correctPoints": 2,
+      "incorrectPoints": -2,
+      "questions": [
+        {
+          "type": "single",
+          "question": "Polska leży w Europie?",
+          "answers": [
+            "Tak",
+            "Nie"
+          ],
+          "correctIndex": 0
+        },
+        {
+          "type": "single",
+          "question": "Który kraj jest największy",
+          "answers": [
+            "USA ",
+            "Chiny ",
+            "Rosja"
+          ],
+          "correctIndex": 2
+        }
+      ],
+      "createdAt": "2026-01-19T08:30:55.724Z"
     }
   ],
   "categories": [

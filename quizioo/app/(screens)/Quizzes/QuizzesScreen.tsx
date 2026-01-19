@@ -2,7 +2,7 @@ import { Text, View, TouchableOpacity, TextInput, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "../Quizzes/QuizzesScreen.style";
 import { Dropdown } from "react-native-element-dropdown";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { Category, Quiz } from "@/app/(api)/types";
 import { api } from "@/app/(api)/client";
 import { Ionicons } from "@expo/vector-icons";
@@ -10,6 +10,7 @@ import {FlatList} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "@/app/(navigation)/types";
+import { useFocusEffect } from "@react-navigation/native";
 
 type Nav = NativeStackNavigationProp<RootStackParamList, "QuizDetails">;
 
@@ -60,10 +61,11 @@ export default function QuizzesScreen()
         };
     }, []);
 
-    useEffect(() => {
-        // gdy user zmienia search/kategorię, wracamy na stronę 1
-        load(1);
-    }, [quizCategory, search]);
+	useFocusEffect(
+		useCallback(() => {
+			load(1);
+		}, [quizCategory, search])
+	);
 
     type ItemProps = {quiz: Quiz};
 

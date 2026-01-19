@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Alert, StatusBar, Text, TextInput, TouchableOpacity, View, FlatList} from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { colors, styles } from "./HomeScreen.styles";
@@ -13,6 +13,7 @@ import type { Quiz } from "@/app/(api)/types";
 import { TabParamList } from "@/app/(navigation)/types";
 import { useAuth } from "@/app/(context)/AppContext";
 import { Avatar } from "../components/Avatar";
+import { useFocusEffect } from "@react-navigation/native";
 
 import {blue} from "react-native-reanimated/lib/typescript/Colors";
 
@@ -46,6 +47,7 @@ export default function HomeScreen() {
 	else
 		greetingIcon = "moon";
 
+	{/*
 	useEffect(() => {
     let mounted = true;
     const loadQuizzes = async () => {
@@ -64,7 +66,34 @@ export default function HomeScreen() {
       mounted = false;
     };
   }, []);
+  */}
 
+	const loadQuizzes = async () => {
+		try {
+			setLoading(true);
+			const data = await api.listQuizzesHome();
+			setQuizzes(data);
+		} catch (e) {
+			Alert.alert("Error", "Cannot load quizzes");
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	useFocusEffect(
+		useCallback(() => {
+			let active = true;
+			(async () => {
+			if (!active) return;
+			await loadQuizzes();
+		})();
+
+			return () => {
+				active = false;
+			};
+		}, [])
+	);
+ 
 
 	type ItemProps = {quiz: Quiz};
 
