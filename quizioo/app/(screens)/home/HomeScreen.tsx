@@ -69,7 +69,10 @@ export default function HomeScreen() {
 	type ItemProps = {quiz: Quiz};
 
 	const Item = ({ quiz }: ItemProps) => (
-	<TouchableOpacity style={styles.containerItem}>
+	<TouchableOpacity 
+		style={styles.containerItem}
+		onPress={() => navigation.navigate("QuizDetails", { id: quiz.id })}
+	>
 		<View style={styles.leftIcon}>
 		<Ionicons name="book-sharp" size={32} color="rgba(100, 200, 255, 0.8)" />
 		</View>
@@ -116,7 +119,7 @@ export default function HomeScreen() {
 			</View>
 			<View style={styles.liveQuiz}>
 				<Text style={styles.liveQuizText}>Live Quizzes</Text>
-				<Link screen="QuizAdd" params={{ id: 'quizadd' }}style={styles.textLink}>See all</Link>
+				<Link screen="QuizDetails" params={{ id: 'quizadd' }}style={styles.textLink}>See all</Link>
 			</View>
 
 			<FlatList

@@ -8,6 +8,8 @@ import SettingsScreen from "../(screens)/Settings/SettingsScreen";
 import { TabParamList } from "./types";
 import ProfileScreen from "../(screens)/Profile/ProfileScreen";
 import QrScannerScreen from "../(screens)/Camera/QeScannerScreen";
+import QuizDetails from "../(screens)/Quizzes/QuizDetails";
+import ProfilePicture from "../(screens)/Profile/ProfilePicture";
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
@@ -78,6 +80,25 @@ export default function TabNav(){
 					tabBarIcon: ({ color, size }) => <Ionicons name ="settings" color={color} size={size} />
 				}}
 			/>
+			<Tab.Screen
+				name="QuizDetails"
+				component={QuizDetails}
+				options={{
+					title: "Details",
+					tabBarButton: () => null,
+					tabBarItemStyle: { display: 'none' },
+				}}
+			/>
+			<Tab.Screen
+				name="ProfilePicture"
+				component={ProfilePicture}
+				options={{
+					title: "ProfilePicture",
+					tabBarButton: () => null,
+					tabBarItemStyle: { display: 'none' },
+				}}
+			/>
+	
 		</Tab.Navigator>
 	);
 

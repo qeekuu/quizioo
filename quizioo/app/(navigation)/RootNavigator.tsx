@@ -13,6 +13,7 @@ import QuestionsScreen from "../(screens)/QuizAdd/QuestionsScreen";
 import {useAuth} from "../(context)/AppContext";
 import ProfileScreen from "../(screens)/Profile/ProfileScreen";
 import ProfilePicture from "../(screens)/Profile/ProfilePicture";
+import QuizDetails from "../(screens)/Quizzes/QuizDetails";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -52,6 +53,11 @@ export default function RootNavigator(){
 			<Stack.Screen
 				name="ProfilePicture"
 				component={ProfilePicture}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name="QuizDetails"
+				component={QuizDetails}
 				options={{ headerShown: false }}
 			/>
 			<Stack.Screen

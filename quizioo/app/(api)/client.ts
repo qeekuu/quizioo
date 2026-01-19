@@ -44,7 +44,12 @@ console.log("X-Total-Count:", res.headers.get("X-Total-Count"));
 	},
 	
 	async listQuizzesHome(): Promise<Quiz[]> {
-		const res = await fetch(`${API_BASE}/quizzes?_sort=id&_order=desc&_limit=3`);
+		const { data } = await this.listQuizzes({ page: 1, perPage: 3});
+		return data;
+	},
+
+	async listQuizzesExisting(): Promise<Quiz[]> {
+		const res = await fetch(`${API_BASE}/quizzes?_sort=id&_order=desc`);
 		return handle<Quiz[]>(res);
 	},
 
@@ -77,7 +82,11 @@ console.log("X-Total-Count:", res.headers.get("X-Total-Count"));
 		});
 		await handle<unknown>(res);
 	},
-
+	
+	async getQuiz(id: number) : Promise<Quiz> {
+		const res = await fetch(`${API_BASE}/quizzes/${id}`);
+		return handle<Quiz>(res);
+	},
 
   async findUserByEmail(email: string): Promise<User | null> {
     const res = await fetch(`${API_BASE}/users?email=${encodeURIComponent(email)}`);

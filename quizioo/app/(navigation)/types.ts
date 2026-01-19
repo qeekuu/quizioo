@@ -8,14 +8,26 @@ export type RootStackParamList = {
 	App: undefined;
 	Settings: undefined;
 	QuizAdd: undefined;
-	Questions: {
-		quizName: string;
-		quizType: string;
-		correctPoints: number;
-		incorrectPoints: number;
-		numQuestions: number;
-	};
+	Questions:
+    | {
+        mode: "create";
+        quizName: string;
+        quizType: string;
+        correctPoints: number;
+        incorrectPoints: number;
+        numQuestions: number;
+      }
+    | {
+        mode: "edit";
+        quizId: number;
+        quizName: string;
+        quizType: string;
+        correctPoints: number;
+        incorrectPoints: number;
+        numQuestions: number;
+      };
 	ProfilePicture: undefined;
+	QuizDetails: { id: number };
 };
 
 export type TabParamList = {
@@ -25,6 +37,8 @@ export type TabParamList = {
 	Profile: undefined;
 	Settings: undefined;
 	QrCamera: undefined;
+	QuizDetails: undefined;
+	ProfilePicture: undefined;
 };
 
 

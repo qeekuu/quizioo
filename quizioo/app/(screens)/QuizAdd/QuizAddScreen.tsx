@@ -78,7 +78,7 @@ export default function QuizAddScreen() {
 		return Alert.alert("Validation", "Points must be numbers");
 
 	try {
-		const existing = await api.listQuizzes();
+		const existing = await api.listQuizzesExisting();
 		const targetName = quizName.trim();
 		const targetType = quizType; // kategorie
 
@@ -87,6 +87,7 @@ export default function QuizAddScreen() {
 			return Alert.alert("Validation", "Quiz name already exist in this category, choose diffrent one.");
 
 	navigation.navigate("Questions", {
+	  mode: 'create',
       quizName: targetName,
       quizType: targetType,
       correctPoints: cp,

@@ -52,6 +52,7 @@ console.log("API_BASE =", API_BASE);
 	  }))
   )
 
+  const params = route.params;
   const navigation = useNavigation<Nav>();
   const [localQuizName, setLocalQuizName] = useState(quizName);
 
@@ -420,10 +421,10 @@ console.log("API_BASE =", API_BASE);
 			  if (!q.question.trim()) return true;
 
 			  if (q.type === "single")
-				return q.answers.length < 2 || q.answers.some(a => !a.trim());
+				return q.answers.length <= 1 || q.answers.some(a => !a.trim());
 
 			  if (q.type === "multiple")
-				return q.answers.length < 2 || q.answers.some(a => !a.trim()) || q.correctIndexes.length === 0;
+				return q.answers.length <= 1 || q.answers.some(a => !a.trim()) || q.correctIndexes.length === 0;
 
 			  if (q.type === "open")
 				return !q.correctText.trim();
@@ -442,18 +443,32 @@ console.log("API_BASE =", API_BASE);
 
 			if(hasEmpty)
 				return Alert.alert("Validation", "Fill all the questions and answers.");
-			
+
 			try {
-				await api.createQuiz({
-					quizName : quizName.trim(),
-					quizType,
-					correctPoints,
-					incorrectPoints,
-					questions,
-					createdAt: new Date().toISOString(),
+				if (params.mode === "create") {
+					const created = await api.createQuiz({
+						quizName: quizName.trim(),
+						quizType,
+						correctPoints,
+						incorrectPoints,
+						questions,
+						createdAt: new Date().toISOString(),
 				});
 
-				Alert.alert("Saved", "Quiz saved to db.json");
+				Alert.alert("Saved", "Quiz saved");
+				navigation.replace("QuizDetails", { id: created.id });
+				} else {
+					await api.updateQuiz(params.quizId, {
+						questions,
+						quizName: quizName.trim(),
+						quizType,
+						correctPoints,
+						incorrectPoints,
+				});
+
+				Alert.alert("Saved", "Quiz updated");
+				navigation.replace("QuizDetails", { id: params.quizId });
+				}
 			} catch(e: any){
 				Alert.alert("Error", e?.message ?? "Quiz has not been saved");
 			}

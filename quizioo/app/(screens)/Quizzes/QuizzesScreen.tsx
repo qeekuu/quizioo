@@ -7,9 +7,15 @@ import { Category, Quiz } from "@/app/(api)/types";
 import { api } from "@/app/(api)/client";
 import { Ionicons } from "@expo/vector-icons";
 import {FlatList} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { RootStackParamList } from "@/app/(navigation)/types";
+
+type Nav = NativeStackNavigationProp<RootStackParamList, "QuizDetails">;
 
 export default function QuizzesScreen()
 {
+	const navigation = useNavigation<Nav>();
     const QUIZZES_PER_PAGE = 3;
 
     const [quizCategory, setQuizCategory] = useState<string | null>(null);
@@ -62,7 +68,10 @@ export default function QuizzesScreen()
     type ItemProps = {quiz: Quiz};
 
     const Item = ({ quiz }: ItemProps) => (
-        <TouchableOpacity style={styles.containerItem}>
+        <TouchableOpacity 
+			style={styles.containerItem}
+			onPress={() => navigation.navigate("QuizDetails", { id: quiz.id })}
+		>
             <View style={styles.leftIcon}>
                 <Ionicons name="book-sharp" size={32} color="rgba(100, 200, 255, 0.8)" />
             </View>
