@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { CameraView, useCameraPermissions, BarcodeScanningResult } from "expo-camera";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { RootStackParamList } from "@/app/(navigation)/types";
+import { api } from "@/app/(api)/client";
+
+type Nav = NativeStackNavigationProp<RootStackParamList>;
 
 export default function QrScannerScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
   const [lastValue, setLastValue] = useState<string | null>(null);
-
+  const navigation = useNavigation<Nav>();
   if (!permission) return <View />;
 
   if (!permission.granted) {
@@ -20,18 +26,38 @@ export default function QrScannerScreen() {
     );
   }
 
-  const handleScan = (result: BarcodeScanningResult) => {
+  function extractCode(raw: string) {
+		const m = raw.match(/[?&]code=([^&]+)/i);
+		if(m?.[1])
+			return decodeURIComponent(m[1]);
+		return raw.trim();
+  }
+
+  const handleScan = async (result: BarcodeScanningResult) => {
     if (scanned) return;
 
     setScanned(true);
     setLastValue(result.data);
+	
+	const code = extractCode(result.data);
+
+	try {
+		const created = await api.importQuizByShareCode(code);
+		Alert.alert("Imported ✅", `Dodano: ${created.quizName}`, [
+        { text: "Open", onPress: () => navigation.replace("QuizDetails", { id: created.id }) },
+        { text: "OK", onPress: () => navigation.goBack() },
+      ]);
+	} catch (e: any) {
+		Alert.alert("Import failed", e?.message ?? "Cannot import");
+		setScanned(false);
+	}
 
     Alert.alert("Scanned", result.data, [
       { text: "Keep scanning", onPress: () => setScanned(false) },
       { text: "OK" },
     ]);
   };
-
+  
   return (
     <View style={styles.container}>
       <CameraView

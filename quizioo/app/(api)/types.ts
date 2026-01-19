@@ -59,6 +59,13 @@ export type Category = {
   label: string;
 };
 
+export type QuizShare = {
+	id: number;
+	code: string;
+	quizId: number;
+	createdAt: string;
+};
+
 export type User = {
   id: string;
   username: string;

@@ -105,6 +105,45 @@ export const api = {
 	});
 	return handle<User>(res);
   },
-	
+
+  async createQuizShare(quizId: number): Promise<{ code: string }> {
+	const code = (globalThis.crypto as any)?.randomUUID?.() ?? Math.random().toString(16).slice(2);
+
+	const res = await fetch(`${API_BASE}/quizShares`, {
+		method: "POST",
+		headers: { "Content-Type": "application/json"},
+		body: JSON.stringify({
+			code,
+			quizId,
+			createdAt: new Date().toISOString(),
+		}),
+	});
+
+	await handle(res);
+	return { code };
+  },
+
+  async importQuizByShareCode(code: string): Promise<Quiz> {
+	const resShare = await fetch(`${API_BASE}/quizShares?code=${encodeURIComponent(code)}`);
+	const shares = await handle<any[]>(resShare);
+
+	const share = shares[0];
+	if(!share)
+		throw new Error("Invalid code (share not found)");
+
+	const quiz = await this.getQuiz(Number(share.quizId));
+
+	const copy: Omit<Quiz, "id"> = {
+		quizName: `${quiz.quizName} (imported)`,
+		quizType: quiz.quizType,
+		correctPoints: quiz.correctPoints,
+		incorrectPoints: quiz.incorrectPoints,
+		questions: quiz.questions,
+		createdAt: new Date().toISOString(),
+	};
+
+	const created = await this.createQuiz(copy as any);
+	return created;
+  },
 };
 

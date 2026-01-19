@@ -209,6 +209,10 @@ export default function QuizDetails() {
             <TouchableOpacity style={styles.button} onPress={onDeleteQuiz}>
               <Text style={styles.text}>Delete</Text>
             </TouchableOpacity>
+			<TouchableOpacity style={styles.button} onPress={() => navigation.navigate("QrShare", { quizId: quiz.id })}>
+				<Text style={styles.text}>Share QR</Text>
+			</TouchableOpacity>
+			
           </View>
 
           {!started && !finished ? (

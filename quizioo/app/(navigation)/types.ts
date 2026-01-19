@@ -28,6 +28,7 @@ export type RootStackParamList = {
       };
 	ProfilePicture: undefined;
 	QuizDetails: { id: number };
+	QrShare : { quizId: number};
 };
 
 export type TabParamList = {
