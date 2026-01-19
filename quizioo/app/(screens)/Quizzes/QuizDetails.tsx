@@ -70,7 +70,7 @@ export default function QuizDetails() {
   const questions = quiz?.questions ?? [];
   const current = questions[idx];
 
-  const headerTitle = useMemo(() => (quiz ? quiz.quizName : "Quiz details"), [quiz]);
+  const topBarTitle = useMemo(() => (quiz ? quiz.quizName : "Quiz details"), [quiz]);
 
   function resetAnswerBuffers() {
     setSingleIndex(null);
@@ -180,7 +180,7 @@ export default function QuizDetails() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topBar}>
-        <Text style={styles.topBarText}>{headerTitle}</Text>
+        <Text style={styles.topBarText}>{topBarTitle}</Text>
       </View>
 
       {loading ? (
@@ -194,9 +194,9 @@ export default function QuizDetails() {
       ) : (
         <ScrollView contentContainerStyle={{ padding: 16, gap: 12 }}>
           <View style={{ gap: 6 }}>
-            <Text style={styles.subTitle}>{quiz.quizType}</Text>
-            <Text style={styles.textMuted}>Questions: {questions.length}</Text>
-            <Text style={styles.textMuted}>
+            <Text style={[styles.text, { fontSize: 18 }]}>Category: {quiz.quizType}</Text>
+            <Text style={[styles.text, { fontSize: 18 }]}>Questions: {questions.length}</Text>
+            <Text style={[styles.text, { fontSize: 18 }]}>
               Points: +{quiz.correctPoints} / {quiz.incorrectPoints}
             </Text>
           </View>
