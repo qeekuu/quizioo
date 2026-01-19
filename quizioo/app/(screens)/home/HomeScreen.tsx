@@ -14,6 +14,7 @@ import { TabParamList } from "@/app/(navigation)/types";
 import { useAuth } from "@/app/(context)/AppContext";
 import { Avatar } from "../components/Avatar";
 import { useFocusEffect } from "@react-navigation/native";
+import { loadRecentQuiz } from "@/app/(utils)/recentQuiz";
 
 import {blue} from "react-native-reanimated/lib/typescript/Colors";
 
@@ -33,6 +34,7 @@ export default function HomeScreen() {
 
 	const [quizzes, setQuizzes] = useState<Quiz[]>([]);
 	const [loading, setLoading] = useState(true);
+	const [recent, setRecent] = useState<{ quiz: Quiz; percent: number } | null>(null);
 
 	type IoniconName = ComponentProps<typeof Ionicons>["name"];
 	const hour = new Date().getHours();
@@ -80,16 +82,49 @@ export default function HomeScreen() {
 		}
 	};
 
+	const loadRecent = async () => {
+		try {
+			const info = await loadRecentQuiz();
+			if(!info){
+				setRecent(null);
+				return;
+			}
+
+			const q = await api.getQuiz(info.quizId);
+
+			const percent = info.totalQuestions > 0 ? Math.round((info.correntCounts / info.totalQuestions) * 100) : 0;
+
+			setRecent({ quiz: q, percent });
+		} catch {
+			setRecent(null);
+		}
+	};
+
 	useFocusEffect(
 		useCallback(() => {
-			let active = true;
+			let cancelled = false;
+
 			(async () => {
-			if (!active) return;
-			await loadQuizzes();
+				try {	
+					setLoading(true);
+					const [homeList] = await Promise.all([
+						api.listQuizzesHome(),
+						loadRecent(),
+					]);
+					
+					if(cancelled)
+						return;
+					setQuizzes(homeList);
+				} catch (e) {
+					Alert.alert("Error", "Cannot load quizzes");
+				} finally {
+					if(!cancelled)
+						setLoading(false);
+				}
 		})();
 
 			return () => {
-				active = false;
+				cancelled = false;
 			};
 		}, [])
 	);
@@ -139,10 +174,10 @@ export default function HomeScreen() {
 			<View style={styles.cardReacentQuiz}>
 				<View>
 					<Text style={styles.textMuted}>Reacent Quiz</Text>
-					<Text style={styles.textReacentQuiz}>Name</Text>
+					<Text style={styles.textReacentQuiz}>{recent ? recent.quiz.quizName : "No recent quiz yet"}</Text>
 				</View>
 				<View style={styles.cardQuizPercent}>
-					<Text style={styles.text}>100%</Text>
+					<Text style={styles.text}>{recent ? `${recent.percent}%` : "-"}</Text>
 				</View>
 
 			</View>

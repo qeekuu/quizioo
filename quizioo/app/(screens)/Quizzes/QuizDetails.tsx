@@ -10,6 +10,8 @@ import type { RootStackParamList } from "@/app/(navigation)/types";
 import { api } from "@/app/(api)/client";
 import type { Quiz, Question } from "@/app/(api)/types";
 
+import { saveRecentQuiz } from "@/app/(utils)/recentQuiz";
+
 type Nav = NativeStackNavigationProp<RootStackParamList, "QuizDetails">;
 type QuizDetailsRoute = RouteProp<RootStackParamList, "QuizDetails">;
 
@@ -112,22 +114,34 @@ export default function QuizDetails() {
 
     const correct = isCorrect(current);
 
-    if (current.type === "single" || current.type === "multiple" || current.type === "open" || current.type === "boolean") {
-      if (correct) {
-        setScore((s) => s + quiz.correctPoints);
-        setCorrectCount((c) => c + 1);
-      } else {
-        setScore((s) => s + quiz.incorrectPoints);
-      }
-    }
-
     const last = idx >= questions.length - 1;
     if (last) {
-      setFinished(true);
-      setStarted(false);
+		const deltaScore = correct ? quiz.correctPoints : quiz.incorrectPoints;
+		const finalScore = score + deltaScore;
+		const finalCorrect = correct ? (correctCount + 1) : correctCount;
+		
+		saveRecentQuiz({
+			quizId: quiz.id,
+			finishedAt: Date.now(),
+			score: finalScore,
+			correntCounts: finalCorrect,
+			totalQuestions: questions.length,
+		}).catch(() => {});
+
+		setScore(finalScore);
+		setCorrectCount(finalCorrect);
+		setFinished(true);
+		setStarted(false);
     } else {
-      setIdx((i) => i + 1);
-      resetAnswerBuffers();
+		if(correct) {
+			setScore((s) => s + quiz.correctPoints);
+			setCorrectCount((c) => c + 1);
+		} else {
+			setScore((s) => s + quiz.incorrectPoints);
+		}
+
+		setIdx((i) => i + 1);
+		resetAnswerBuffers();
     }
   }
 
