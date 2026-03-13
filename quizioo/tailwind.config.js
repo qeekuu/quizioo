@@ -13,6 +13,8 @@ module.exports = {
 			surface: "#0E1422",
 			accent:  "#FF5722",
 			text: "#F8FAFC",
+			textMuted: "#A3ADC2",
+			linnk: "#17B9C4",
 		},
     extend: {
 
